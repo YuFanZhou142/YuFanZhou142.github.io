@@ -24,7 +24,7 @@ This site is a lightweight personal homepage built for academic and professional
 |-- css/
 |   `-- style.css
 `-- assets/
-    |-- vann.jpg
+    |-- vann1.jpg
     `-- avatar-placeholder.svg
 ```
 
@@ -56,7 +56,7 @@ To update the homepage in the future:
 
 - Edit `index.html` to change the text content and section structure
 - Edit `css/style.css` to adjust layout, colors, spacing, and typography
-- Replace `assets/vann.jpg` with a newer profile photo if needed
+- Replace `assets/vann1.jpg` with a newer profile photo if needed
 - Update project links, contact details, and external profiles as your portfolio grows
 
 ## Deployment
