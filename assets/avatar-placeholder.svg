@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="title desc">
+  <title id="title">Avatar placeholder for Vann Zhou</title>
+  <desc id="desc">A circular white-background placeholder with the letter V.</desc>
+  <rect width="800" height="800" rx="120" fill="#f8f8f5" />
+  <circle cx="400" cy="400" r="255" fill="#ffffff" stroke="#d9e4ef" stroke-width="28" />
+  <circle cx="400" cy="318" r="118" fill="none" stroke="#123d6a" stroke-width="34" />
+  <path d="M215 585c41-112 113-171 185-171 74 0 146 59 185 171" fill="none" stroke="#123d6a" stroke-linecap="round" stroke-width="40" />
+  <text x="400" y="168" text-anchor="middle" fill="#2d6aa3" font-family="Outfit, Arial, sans-serif" font-size="96" font-weight="700" letter-spacing="8">V</text>
+</svg>
