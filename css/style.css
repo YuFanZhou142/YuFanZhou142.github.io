@@ -70,10 +70,10 @@ h2 {
 }
 
 .layout {
-  width: 1110px;
+  width: min(1280px, calc(100% - 32px));
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 180px minmax(0, 900px);
+  grid-template-columns: 180px minmax(0, 1fr);
   gap: 24px;
   align-items: start;
 }
