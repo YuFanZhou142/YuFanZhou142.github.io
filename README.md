@@ -15,7 +15,8 @@ The homepage currently presents:
 - a `News` section for recent updates
 - a `Selected Papers` section
 - an `Educations` section
-- a `Competitions` section with supporting PDF files
+- a `Competitions & Patents` section with supporting PDF files
+- an `Achievements` section
 - a `Misc` section for hobbies and personal interests
 
 ## Tech Stack
@@ -37,6 +38,7 @@ The homepage currently presents:
     |-- vann.jpg
     |-- avatar-placeholder.svg
     `-- files/
+        |-- Certificate of Computer Software Copyright Registration.pdf
         |-- datang-cup-2025-proof.pdf
         |-- embedded-competition-2025-proof.pdf
         `-- math-modeling-2025-proof.pdf
@@ -72,7 +74,7 @@ This website is deployed with GitHub Pages from the `main` branch.
 After updating the site:
 
 ```powershell
-git add README.md index.html css/style.css assets/files
+git add index.html README.md css/style.css assets/files
 git commit -m "Update homepage content"
 git push origin main
 ```
