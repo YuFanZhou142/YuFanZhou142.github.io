@@ -214,6 +214,28 @@ a:focus-visible {
   }
 }
 
+.visitor-counter {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #e0dbd2;
+  color: #777;
+  font-size: 0.9rem;
+}
+
+.counter-icon {
+  font-size: 1rem;
+}
+
+#visitor-count {
+  font-weight: 500;
+  color: #143a67;
+  font-family: "IBM Plex Mono", monospace;
+  min-width: 40px;
+}
+
 @media print, screen and (max-width: 640px) {
   body {
     font-size: 17px;
@@ -238,5 +260,10 @@ a:focus-visible {
 
   .side-nav {
     padding: 14px 14px 10px;
+  }
+
+  .visitor-counter {
+    width: 100%;
+    justify-content: center;
   }
 }

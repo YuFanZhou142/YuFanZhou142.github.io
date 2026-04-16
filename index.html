@@ -36,6 +36,11 @@
         <a href="#competitions">Competitions &amp; Patents</a>
         <a href="#achievements">Achievements</a>
         <a href="#misc">Misc</a>
+        <div class="visitor-counter">
+          <span class="counter-icon">👣</span>
+          <span id="visitor-count">...</span>
+          <span>visits</span>
+        </div>
       </aside>
 
       <div class="content">
@@ -151,5 +156,24 @@
       </div>
     </div>
   </div>
+<script>
+  (function() {
+    const countEl = document.getElementById('visitor-count');
+    const namespace = 'yufanzhou142';
+    const key = 'yufanzhou142.github.io';
+    const apiHit = 'https://api.countapi.xyz/hit/' + namespace + '/' + key;
+    const apiGet = 'https://api.countapi.xyz/get/' + namespace + '/' + key;
+
+    fetch(apiHit)
+      .then(function() { return fetch(apiGet); })
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        countEl.textContent = data.value.toLocaleString();
+      })
+      .catch(function() {
+        countEl.textContent = '---';
+      });
+  })();
+</script>
 </body>
 </html>
