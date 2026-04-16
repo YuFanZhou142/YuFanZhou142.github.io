@@ -156,24 +156,27 @@
       </div>
     </div>
   </div>
+<script src="https://cdn.jsdelivr.net/npm/busuanzi@2.3.0/dist/busuanzi.pure.mini.js"></script>
 <script>
   (function() {
     const countEl = document.getElementById('visitor-count');
-    const namespace = 'yufanzhou142';
-    const key = 'yufanzhou142.github.io';
-    const apiHit = 'https://api.countapi.xyz/hit/' + namespace + '/' + key;
-    const apiGet = 'https://api.countapi.xyz/get/' + namespace + '/' + key;
+    const busuanziEl = document.getElementById('busuanzi_value_site_pv');
 
-    fetch(apiHit)
-      .then(function() { return fetch(apiGet); })
-      .then(function(res) { return res.json(); })
-      .then(function(data) {
-        countEl.textContent = data.value.toLocaleString();
-      })
-      .catch(function() {
-        countEl.textContent = '---';
-      });
+    function syncCount() {
+      if (busuanziEl && busuanziEl.textContent.trim()) {
+        countEl.textContent = busuanziEl.textContent.trim();
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      syncCount();
+      setTimeout(syncCount, 1200);
+      setTimeout(syncCount, 2500);
+    });
   })();
 </script>
+<span id="busuanzi_container_site_pv" class="busuanzi-hidden">
+  <span id="busuanzi_value_site_pv"></span>
+</span>
 </body>
 </html>

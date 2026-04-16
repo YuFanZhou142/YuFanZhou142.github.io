@@ -214,6 +214,10 @@ a:focus-visible {
   }
 }
 
+.busuanzi-hidden {
+  display: none;
+}
+
 .visitor-counter {
   display: flex;
   align-items: center;
