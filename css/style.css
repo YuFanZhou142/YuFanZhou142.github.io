@@ -21,31 +21,6 @@
   --counter-color: #143a67;
 }
 
-/* ── Dark theme (auto) ── */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg-page: #111827;
-    --bg-gradient-a: rgba(59, 130, 246, 0.06);
-    --bg-gradient-b: rgba(168, 140, 90, 0.04);
-    --bg-content: rgba(30, 41, 59, 0.97);
-    --bg-sidenav: rgba(30, 41, 59, 0.92);
-    --border-color: #2d3a4d;
-    --border-light: #334155;
-    --divider-color: #374151;
-    --heading-color: #93c5fd;
-    --text-color: #d1d5db;
-    --text-secondary: #9ca3af;
-    --text-muted: #6b7280;
-    --link-color: #60a5fa;
-    --sidenav-text: #9ca3af;
-    --shadow-sidenav: 0 16px 36px rgba(0, 0, 0, 0.3);
-    --shadow-content: 0 20px 56px rgba(0, 0, 0, 0.35);
-    --shadow-photo: 0 10px 24px rgba(0, 0, 0, 0.25);
-    --focus-ring: rgba(96, 165, 250, 0.3);
-    --counter-color: #93c5fd;
-  }
-}
-
 /* ── Dark theme (manual toggle) ── */
 [data-theme="dark"] {
   --bg-page: #111827;

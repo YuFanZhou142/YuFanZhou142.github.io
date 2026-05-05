@@ -171,10 +171,8 @@
     var label = document.getElementById('theme-label');
 
     function getStored() { return localStorage.getItem('theme'); }
-    function systemDark() { return window.matchMedia('(prefers-color-scheme: dark)').matches; }
     function isDark() {
-      var s = getStored();
-      return s === 'dark' || (!s && systemDark());
+      return getStored() === 'dark';
     }
 
     function apply(dark) {
@@ -197,10 +195,6 @@
       var next = !isDark();
       localStorage.setItem('theme', next ? 'dark' : 'light');
       apply(next);
-    });
-
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function() {
-      if (!getStored()) apply(systemDark());
     });
   })();
 </script>
