@@ -263,16 +263,14 @@ a:focus-visible {
   margin-top: 0.5em;
   margin-left: -0.5em;
   color: #fff;
-  background-color: var(--link-color);
+  background-color: #00369f;
   font-size: 0.8em;
-  border-radius: 2px;
-  line-height: 1.8;
 }
 
 .paper-box .paper-box-image img {
   max-width: 400px;
   box-shadow: 3px 3px 6px #888;
-  border-radius: 4px;
+  object-fit: cover;
 }
 
 .paper-box .paper-box-text {
@@ -299,7 +297,7 @@ a:focus-visible {
   line-height: 1.55;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 560px) {
   .paper-box .paper-box-image {
     justify-content: left;
     min-width: 200px;
