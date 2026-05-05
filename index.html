@@ -41,6 +41,12 @@
           <span id="visitor-count">...</span>
           <span>visits</span>
         </div>
+        <div class="theme-toggle">
+          <button type="button" class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle dark mode">
+            <span class="icon" id="theme-icon">🌙</span>
+            <span id="theme-label">Dark</span>
+          </button>
+        </div>
       </aside>
 
       <div class="content">
@@ -157,6 +163,47 @@
     </div>
   </div>
 <script src="https://cdn.jsdelivr.net/npm/busuanzi@2.3.0/dist/busuanzi.pure.mini.js"></script>
+<script>
+  (function() {
+    var root = document.documentElement;
+    var btn = document.getElementById('theme-toggle');
+    var icon = document.getElementById('theme-icon');
+    var label = document.getElementById('theme-label');
+
+    function getStored() { return localStorage.getItem('theme'); }
+    function systemDark() { return window.matchMedia('(prefers-color-scheme: dark)').matches; }
+    function isDark() {
+      var s = getStored();
+      return s === 'dark' || (!s && systemDark());
+    }
+
+    function apply(dark) {
+      if (dark) {
+        root.setAttribute('data-theme', 'dark');
+        icon.textContent = '☀️';
+        label.textContent = 'Light';
+      } else {
+        root.setAttribute('data-theme', 'light');
+        icon.textContent = '🌙';
+        label.textContent = 'Dark';
+      }
+      document.querySelector('meta[name="theme-color"]')
+        .setAttribute('content', dark ? '#111827' : '#ffffff');
+    }
+
+    apply(isDark());
+
+    btn.addEventListener('click', function() {
+      var next = !isDark();
+      localStorage.setItem('theme', next ? 'dark' : 'light');
+      apply(next);
+    });
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function() {
+      if (!getStored()) apply(systemDark());
+    });
+  })();
+</script>
 <script>
   (function() {
     const countEl = document.getElementById('visitor-count');
