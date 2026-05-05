@@ -272,10 +272,6 @@ a:focus-visible {
 }
 
 /* ── Visitor counter ── */
-.busuanzi-hidden {
-  display: none;
-}
-
 .visitor-counter {
   display: flex;
   align-items: center;
