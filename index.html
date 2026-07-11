@@ -99,6 +99,9 @@
             learning stage and am currently striving to master professional knowledge and explore
             cutting-edge research.
           </p>
+          <p>
+            <strong style="color: red;">I am actively seeking Fall 2027 PhD opportunities and research collaborations — please feel free to reach out!</strong>
+          </p>
         </section>
 
         <section id="news" class="section-block">
@@ -188,7 +191,7 @@
         </section>
 
         <div class="footer-note">
-          Page maintained by Yufan Zhou (Vann).
+          Page maintained by Yufan Zhou (Vann). Last modified: <span id="last-modified">July 11, 2026</span>.
         </div>
       </div>
     </div>
@@ -240,6 +243,15 @@
     s.async = true;
     s.src = 'https://busuanzi.ibruce.info/busuanzi?jsonpCallback=BSZ&_=' + Date.now();
     document.body.appendChild(s);
+  })();
+</script>
+<script>
+  (function() {
+    var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    var d = new Date(document.lastModified);
+    var formatted = months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+    var el = document.getElementById('last-modified');
+    if (el) el.textContent = formatted;
   })();
 </script>
 </body>
