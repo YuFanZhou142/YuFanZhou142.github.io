@@ -23,6 +23,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/news.css">
 </head>
 <body>
   <div class="page">
@@ -102,14 +103,37 @@
 
         <section id="news" class="section-block">
           <h2>🔥 News</h2>
-          <ul>
-            <li><p><em>Jul. 2026</em>:  Awarded "Second Prize, National Finals, China University Computer Design Competition". Congratulations to Jing Zhou.</p></li>
-<li><p><em>Apr. 2026</em>:  😊 My first paper was accepted at ICMR(1st Author, CCFB)!</p></li>
-            <li><p><em>Mar. 2026</em>:  🎉🎉 Our Chinese invention patent "<span class="zh-song">一种多模态融合采算通一体水声有线双模通信系统及方法</span>" has been granted (3rd Inventor).</p></li>
-            <li><p><em>Feb. 2026</em>:  🎉🎉 Our computer software copyright "<span class="zh-song">面向海底地震仪应用的地声信号采集模块软件V1.0</span>" has been granted (1st Author).</p></li>
-            <li><p><em>Sept. 2025</em>:  🎉🎉 Awarded the National Scholarship again.</p></li>
-            <li><p><em>Sept. 2024</em>:  🎉🎉 Awarded the National Scholarship.</p></li>
-          </ul>
+          <div class="news-container">
+            <div class="news-filter">
+              <input type="text" id="newsFilterInput" placeholder="Filter news..." aria-label="Filter news">
+            </div>
+            <div class="news-list" id="newsList">
+              <div class="news-item" data-date="2026-07">
+                <div class="news-date-block">Jul. 2026</div>
+                <div class="news-content">Awarded "Second Prize, National Finals, China University Computer Design Competition". Congratulations to Jing Zhou.</div>
+              </div>
+              <div class="news-item" data-date="2026-04">
+                <div class="news-date-block">Apr. 2026</div>
+                <div class="news-content">😊 My first paper was accepted at ICMR (1st Author, CCFB)!</div>
+              </div>
+              <div class="news-item" data-date="2026-03">
+                <div class="news-date-block">Mar. 2026</div>
+                <div class="news-content">🎉🎉 Our Chinese invention patent "<span class="zh-song">一种多模态融合采算通一体水声有线双模通信系统及方法</span>" has been granted (3rd Inventor).</div>
+              </div>
+              <div class="news-item" data-date="2026-02">
+                <div class="news-date-block">Feb. 2026</div>
+                <div class="news-content">🎉🎉 Our computer software copyright "<span class="zh-song">面向海底地震仪应用的地声信号采集模块软件V1.0</span>" has been granted (1st Author).</div>
+              </div>
+              <div class="news-item" data-date="2025-09">
+                <div class="news-date-block">Sept. 2025</div>
+                <div class="news-content">🎉🎉 Awarded the National Scholarship again.</div>
+              </div>
+              <div class="news-item" data-date="2024-09">
+                <div class="news-date-block">Sept. 2024</div>
+                <div class="news-content">🎉🎉 Awarded the National Scholarship.</div>
+              </div>
+            </div>
+          </div>
         </section>
 
         <section id="papers" class="section-block">
@@ -257,5 +281,7 @@
     if (el) el.textContent = formatted;
   })();
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="js/news-filter.js"></script>
 </body>
 </html>
