@@ -191,7 +191,6 @@ h2 {
   object-fit: cover;
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-photo);
-  transform: scaleX(-1);
 }
 
 .intro-text {
