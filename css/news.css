@@ -34,7 +34,7 @@
 }
 
 .news-list {
-  max-height: 400px;
+  max-height: 420px;
   overflow-y: scroll;
   border: 1px solid var(--border-color);
   border-radius: 12px;
