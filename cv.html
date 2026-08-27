@@ -1,60 +1,157 @@
-<!doctype html>
-<html lang="zh-CN">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Yufan Zhou — CV</title>
-    <style>
-      body{font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial; max-width:900px;margin:40px auto;padding:0 20px;color:#222}
-      header{margin-bottom:24px}
-      .pdf-frame{width:100%;height:80vh;border:1px solid #ddd}
-      .note{background:#fff3cd;border:1px solid #ffeeba;padding:12px;margin:16px 0;border-radius:6px}
-      a.button{display:inline-block;padding:8px 12px;background:#0366d6;color:#fff;border-radius:6px;text-decoration:none}
-    </style>
-  </head>
-  <body>
-    <header>
-      <h1>Yufan Zhou — Curriculum Vitae</h1>
-      <p>下面将展示你的简历 PDF。如果你还没有把 PDF 上传到仓库，请参照下方说明先上传文件到 <code>assets/cv/</code> 目录，文件名须为 <code>Yufan_Zhou-Xiamen_University-2023.pdf</code>（或更新下方链接中的文件名）。</p>
-    </header>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Yufan Zhou — CV</title>
+  <meta name="description" content="Curriculum Vitae of Yufan Zhou, Communication Engineering student at Xiamen University.">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Yufan Zhou — CV">
+  <meta property="og:description" content="Curriculum Vitae of Yufan Zhou, Communication Engineering student at Xiamen University.">
+  <meta property="og:url" content="https://yufanzhou142.github.io/cv.html">
+  <meta property="og:image" content="https://yufanzhou142.github.io/assets/vann1.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .cv-page .content {
+      max-width: 1000px;
+    }
+    .cv-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .cv-header h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      color: var(--heading-color);
+    }
+    .cv-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .cv-actions a {
+      display: inline-block;
+      padding: 8px 16px;
+      background: var(--link-color);
+      color: #fff;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-family: var(--font-mono);
+      transition: opacity 0.2s;
+    }
+    .cv-actions a:hover {
+      opacity: 0.85;
+    }
+    .pdf-container {
+      width: 100%;
+      height: calc(100vh - 200px);
+      min-height: 600px;
+      border: 1px solid var(--border-color, #ddd);
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--bg-content);
+    }
+    .pdf-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    .cv-footer {
+      margin-top: 24px;
+      text-align: center;
+      color: var(--text-color);
+      opacity: 0.7;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="page cv-page">
+    <div class="layout">
+      <aside class="side-nav" aria-label="Section navigation">
+        <div class="side-nav-title">Navigation</div>
+        <a href="index.html#top">Home</a>
+        <a href="index.html#about">About Me</a>
+        <a href="index.html#news">News</a>
+        <a href="index.html#papers">Selected Papers</a>
+        <a href="index.html#educations">Educations</a>
+        <a href="index.html#research-intern">Research Intern</a>
+        <a href="index.html#competitions">Competitions &amp; Patents</a>
+        <a href="index.html#achievements">Achievements</a>
+        <a href="index.html#misc">Misc</a>
+        <div class="theme-toggle">
+          <button type="button" class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle dark mode">
+            <span class="icon" id="theme-icon">🌙</span>
+            <span id="theme-label">Dark</span>
+          </button>
+        </div>
+      </aside>
 
-    <section class="note">
-      <strong>说明：</strong>
-      <ol>
-        <li>我已在仓库创建此页面 <code>cv.html</code> 并提交到默认分支。</li>
-        <li>请把你的 PDF 上传到仓库路径： <code>assets/cv/Yufan_Zhou-Xiamen_University-2023.pdf</code>。上传后页面会直接内嵌显示。</li>
-        <li>如果你希望我代为上传 PDF，请把原始 PDF 文件以附件的方式发给我，或确认允许我从你之前提供的内容处理上传（注意大文件可能需要你在 GitHub 网页端上传）。</li>
-      </ol>
-    </section>
+      <div class="content">
+        <section id="top" class="section-block">
+          <div class="cv-header">
+            <h1>Curriculum Vitae</h1>
+            <div class="cv-actions">
+              <a href="assets/cv/Yufan_Zhou-Xiamen_University-2023.pdf" target="_blank" rel="noopener">Open PDF</a>
+              <a href="assets/cv/Yufan_Zhou-Xiamen_University-2023.pdf" download>Download</a>
+            </div>
+          </div>
+          <div class="pdf-container">
+            <iframe src="assets/cv/Yufan_Zhou-Xiamen_University-2023.pdf" title="Yufan Zhou CV PDF"></iframe>
+          </div>
+        </section>
 
-    <main>
-      <p>
-        内嵌 PDF：
-        <a class="button" href="/assets/cv/Yufan_Zhou-Xiamen_University-2023.pdf" target="_blank" rel="noopener">在新标签打开 PDF</a>
-      </p>
-      <iframe class="pdf-frame" src="/assets/cv/Yufan_Zhou-Xiamen_University-2023.pdf"></iframe>
+        <div class="cv-footer">
+          <a href="index.html" style="color: var(--link-color);">&larr; Back to Homepage</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
-      <h2>如果页面没有显示 PDF</h2>
-      <p>可能原因：</p>
-      <ul>
-        <li>PDF 还没上传到 <code>assets/cv/</code>。</li>
-        <li>文件名不匹配：页面引用的是 <code>Yufan_Zhou-Xiamen_University-2023.pdf</code>，请确认上传的文件名一致，或告诉我你希望使用的文件名，我会把页面链接改成那个名字并提交。</li>
-      </ul>
+<script>
+  (function() {
+    var root = document.documentElement;
+    var btn = document.getElementById('theme-toggle');
+    var icon = document.getElementById('theme-icon');
+    var label = document.getElementById('theme-label');
 
-      <h3>上传 PDF（两种方式）</h3>
-      <ol>
-        <li>在 GitHub 网页界面上传：打开仓库 → 点击 "Upload files" → 选择目标文件夹 <code>assets/cv/</code>（没有就新建）→ 上传并提交（commit）。</li>
-        <li>把 PDF 发给我：如果你的界面允许上传给我，我可以代为把文件添加到仓库（请直接把 PDF 文件拖到聊天或确认允许我使用你先前粘贴的内容进行上传）。</li>
-      </ol>
+    function getStored() { return localStorage.getItem('theme'); }
+    function isDark() { return getStored() === 'dark'; }
 
-      <h3>发布后访问地址</h3>
-      <p>当仓库为 GitHub Pages（username.github.io）并且默认分支有此文件时，你可以通过以下链接访问页面：</p>
-      <ul>
-        <li>页面 URL: https://yufanzhou142.github.io/cv.html</li>
-        <li>PDF URL: https://yufanzhou142.github.io/assets/cv/Yufan_Zhou-Xiamen_University-2023.pdf</li>
-      </ul>
-    </main>
+    function apply(dark) {
+      if (dark) {
+        root.setAttribute('data-theme', 'dark');
+        icon.textContent = '☀️';
+        label.textContent = 'Light';
+      } else {
+        root.setAttribute('data-theme', 'light');
+        icon.textContent = '🌙';
+        label.textContent = 'Dark';
+      }
+      document.querySelector('meta[name="theme-color"]')
+        .setAttribute('content', dark ? '#111827' : '#ffffff');
+    }
 
-    <footer style="margin-top:40px;color:#666">如果你确认我可以以你粘贴的大文件内容直接帮你上传 PDF，我可以继续把 PDF 提交到 <code>assets/cv/</code>（请注意体积和可能的处理时间）。</footer>
-  </body>
+    apply(isDark());
+
+    btn.addEventListener('click', function() {
+      var next = !isDark();
+      localStorage.setItem('theme', next ? 'dark' : 'light');
+      apply(next);
+    });
+  })();
+</script>
+</body>
 </html>
