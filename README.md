@@ -12,7 +12,7 @@ The site is a static homepage with a separate PDF CV viewer. It runs directly on
 The homepage includes:
 
 - Profile photo, contact details, academic/social links, and a `[CV]` link to the CV page
-- About Me and research interests
+- About Me, research interests, and availability for industrial research/foundation model internships and research collaborations
 - News with filtering by content or displayed date
 - Selected Papers with a venue badge, figure, authors, summary, and paper/code links
 - Educations and Research Intern
@@ -106,15 +106,22 @@ The fonts, jQuery, and visitor counter use external services and require network
 | Paper figures | `paper-fig/<paper-name>/` |
 | Text resume | `resume.md` |
 
-The homepage, text resume, and PDF CV are maintained separately; update each relevant version when personal information changes.
+### Current CV and Version Management
 
-The homepage's `[CV]` link opens `cv.html`. Its embedded preview, Open PDF button, and Download button all reference the same current PDF in `cv/`. Replace that file to publish a new CV version. If you rename it, update all three references in `cv.html`; spaces in the URL are encoded as `%20`. The PDF under `assets/cv/` is the previous version.
+The homepage's `[CV]` link opens `cv.html`. Its embedded preview, Open PDF button, and Download button all reference **`cv/Yufan Zhou-Xiamen University.pdf`**, the current published CV. The supplied PDF is published as-is; linking or deploying it does not rewrite its text or layout.
+
+- Replace the PDF at that path to publish a new CV version, and include the PDF in the commit.
+- If the file is renamed, update all three references in `cv.html`. Spaces in its URL are encoded as `%20`.
+- `assets/cv/Yufan_Zhou-Xiamen_University-2023.pdf` is the previous version, retained at its existing URL for older direct links. It is not used by the current CV page.
+- `resume.md` is a separately maintained text resume. Neither the homepage nor the PDF viewer renders it, and it is not automatically synchronized with the PDF.
+
+Use `index.html` as the source for current homepage wording. Pull the latest `main` before editing locally so that changes made on GitHub are preserved.
 
 ### Theme Colors and Highlights
 
 Shared color variables are defined in `:root` and overridden in `[data-theme="dark"]` within `css/style.css`. News labels, paper badges, borders, and shadows use those variables.
 
-Use `.text-accent` for red emphasis. It currently styles the research/internship opportunity notice and the `(Top 0.5%)` National Scholarship annotation, with a separate red color for each theme.
+Use `.text-accent` for red emphasis. It currently styles the industrial research/foundation model internship and collaboration notice, and the National Scholarship annotation displayed as `(Top 0.2%)` on the homepage. Each theme has its own red color.
 
 ### XMU Emblem Watermark
 
@@ -150,17 +157,25 @@ git diff
 
 ## Deployment
 
-GitHub Pages publishes the repository root from `main`. Stage the files you intend to publish, including any newly added assets, then commit and push.
-
-For the homepage, styling, and emblem changes, for example:
+GitHub Pages publishes the repository root from `main`. With a clean working tree, synchronize the local checkout before editing:
 
 ```powershell
-git add index.html cv.html css/style.css css/news.css assets/xmu-emblem.svg README.md
-git commit -m "Update homepage styling and documentation"
+git switch main
+git pull --ff-only origin main
+```
+
+After editing and running the checks above, stage the intended files, including the current PDF when it changes. For a combined homepage, styling, CV, and documentation update:
+
+```powershell
+git add index.html cv.html css/style.css css/news.css assets/xmu-emblem.svg "cv/Yufan Zhou-Xiamen University.pdf" README.md
+git diff --cached --check
+git commit -m "Update homepage, CV, and documentation"
 git push origin main
 ```
 
-GitHub Pages deployment starts after the push; publishing the updated website can take a few minutes.
+If GitHub receives another commit before the push, fetch and integrate those changes before pushing again. Preserve remote content edits when resolving any conflicts.
+
+GitHub Pages deployment starts after the push; publishing can take a few minutes. Confirm that **pages build and deployment** succeeds in GitHub Actions, then check the live homepage's `[CV]` link and the CV preview/download. Run `git status --short --branch` to confirm the local checkout is clean and synchronized with `origin/main`.
 
 ## Links
 
