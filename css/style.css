@@ -26,8 +26,7 @@
   --shadow-paper: 0 3px 10px rgba(35, 75, 106, 0.13);
   --shadow-news: inset 0 1px 3px rgba(35, 75, 106, 0.025);
   --focus-ring: rgba(50, 98, 138, 0.25);
-  --counter-color: #234b6a;
-  --emblem-opacity: 0.17;
+  --emblem-opacity: 0.10;
   --emblem-filter: none;
   --emblem-blend: multiply;
 }
@@ -60,8 +59,7 @@
   --shadow-paper: 0 3px 10px rgba(0, 0, 0, 0.2);
   --shadow-news: inset 0 1px 3px rgba(0, 0, 0, 0.08);
   --focus-ring: rgba(145, 185, 218, 0.3);
-  --counter-color: #a3c4de;
-  --emblem-opacity: 0.17;
+  --emblem-opacity: 0.10;
   --emblem-filter: grayscale(1) invert(1);
   --emblem-blend: screen;
 }
@@ -403,28 +401,6 @@ a:focus-visible {
   line-height: 1;
 }
 
-/* ── Visitor counter ── */
-.visitor-counter {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-top: 6px;
-  padding-top: 0;
-  color: var(--text-muted);
-  font-size: 0.9rem;
-}
-
-.counter-icon {
-  font-size: 1rem;
-}
-
-#visitor-count {
-  font-weight: 500;
-  color: var(--counter-color);
-  font-family: "IBM Plex Mono", monospace;
-  min-width: 40px;
-}
-
 /* ── Responsive: tablet ── */
 @media print, screen and (max-width: 960px) {
   .layout {
@@ -521,11 +497,6 @@ a:focus-visible {
   .paper-box .paper-box-image img {
     max-width: 100%;
     box-shadow: var(--shadow-paper);
-  }
-
-  .visitor-counter {
-    width: 100%;
-    justify-content: center;
   }
 }
 

@@ -26,11 +26,10 @@ The homepage includes:
 - Sticky sidebar navigation on desktop; links wrap into a horizontal navigation area on smaller screens
 - Light and dark themes with `localStorage` persistence on both the homepage and CV page
 - Coordinated blue colors, readable news date labels, subtle shadows, and theme-aware red highlights
-- A vector XMU emblem watermark in the profile area's upper-right corner, at **17% opacity** in both themes
+- A vector XMU emblem watermark in the profile area's upper-right corner, at **10% opacity** in both themes
 - The emblem is hidden below **1140px viewport width** to leave room for profile text
 - A scrollable news list with a text filter
 - A profile image fallback if the portrait cannot load
-- Live page-view counter powered by [Vercount](https://github.com/EvanNotFound/vercount): records each homepage load and refreshes the visible total every 30 seconds
 - Embedded PDF preview, Open PDF, and Download actions on `cv.html`
 - All CV actions use the current PDF in `cv/Yufan Zhou-Xiamen University.pdf`
 - Open Graph and Twitter Card metadata
@@ -51,9 +50,6 @@ The homepage includes:
 ├── cv.html                     # PDF CV viewer and download page
 ├── favicon.svg                 # Site icon
 ├── README.md                   # Project documentation
-├── _config.yml                 # Includes the Vercount verification file in GitHub Pages
-├── .well-known/
-│   └── vercount-verify-<code>.txt  # Vercount domain-ownership proof
 ├── AGENTS.md                   # Repository contribution guidelines
 ├── resume.md                   # Separately maintained text resume
 ├── cv/
@@ -62,8 +58,7 @@ The homepage includes:
 │   ├── style.css               # Shared layout, themes, and emblem watermark
 │   └── news.css                # News list and filter styles
 ├── js/
-│   ├── news-filter.js          # Filters news content and displayed dates
-│   └── visitor-counter.js     # Records real visits and refreshes live statistics
+│   └── news-filter.js          # Filters news content and displayed dates
 ├── assets/
 │   ├── vann1.jpg               # Active profile photo
 │   ├── vann.jpg                # Alternate photo, currently unused
@@ -93,15 +88,7 @@ On Windows, `py -m http.server 8000` also works if the Python launcher is instal
 
 Open the [local homepage](http://127.0.0.1:8000/) or the [local CV page](http://127.0.0.1:8000/cv.html). Use `Ctrl+C` in the server terminal to stop it.
 
-The fonts, jQuery, and visitor counter use external services and require network access.
-
-The `visits` value is Vercount's total recorded page-view count (`site_pv`), including repeat visits. Each production homepage load records one visit with a POST request. While the page is visible, read-only GET requests refresh the displayed total every 30 seconds and when returning to the page. These reads never add visits; background tabs stop polling. A first-party cookie supplies the service's new-visitor flag.
-
-Local and file previews only read the published site's count, using the canonical URL in `index.html`; they do not add visits. Failed requests are retried as read-only requests so an uncertain POST cannot count the same page load twice. If live refresh fails after a successful response, the last received real total remains visible with a tooltip marking it as stale. With no successful response yet, the placeholder is `—`.
-
-The original Busuanzi endpoint was unavailable during the migration. Vercount supports importing Busuanzi totals, but the old cumulative count could not be verified or confirmed as imported. Current numbers reflect the total actually returned by Vercount; no historical offset or fabricated count is added.
-
-To verify the site in the Vercount dashboard, switch the domain's verification method to **File Upload** and click **Check verification** after this proof file is live. Remove the one-time proof file after Vercount marks the domain verified. `_config.yml` keeps the hidden `.well-known` path in the GitHub Pages build.
+The fonts and jQuery use external services and require network access.
 
 ## Updating Content and Appearance
 
@@ -111,7 +98,6 @@ To verify the site in the Vercount dashboard, switch the domain's verification m
 | Shared layout, typography, colors, and shadows | `css/style.css` |
 | News list and date label styles | `css/news.css` |
 | News filtering behavior | `js/news-filter.js` |
-| Live visitor counting and refresh interval | `js/visitor-counter.js` |
 | CV page layout and PDF links | `cv.html` |
 | Current downloadable CV | `cv/Yufan Zhou-Xiamen University.pdf` |
 | Profile photo | `assets/vann1.jpg` |
@@ -180,7 +166,7 @@ git pull --ff-only origin main
 After editing and running the checks above, stage the intended files, including the current PDF when it changes. For a combined homepage, styling, CV, and documentation update:
 
 ```powershell
-git add index.html cv.html css/style.css css/news.css js/news-filter.js js/visitor-counter.js assets/xmu-emblem.svg "cv/Yufan Zhou-Xiamen University.pdf" README.md
+git add index.html cv.html css/style.css css/news.css js/news-filter.js assets/xmu-emblem.svg "cv/Yufan Zhou-Xiamen University.pdf" README.md
 git diff --cached --check
 git commit -m "Update homepage, CV, and documentation"
 git push origin main
