@@ -11,7 +11,7 @@ The site is a static homepage with a separate PDF CV viewer. It runs directly on
 
 The homepage includes:
 
-- Profile photo, contact details, and academic/social links
+- Profile photo, contact details, academic/social links, and a `[CV]` link to the CV page
 - About Me and research interests
 - News with filtering by content or displayed date
 - Selected Papers with a venue badge, figure, authors, summary, and paper/code links
@@ -32,6 +32,7 @@ The homepage includes:
 - A profile image fallback if the portrait cannot load
 - Visitor page-view counter powered by [Busuanzi](https://busuanzi.ibruce.info/)
 - Embedded PDF preview, Open PDF, and Download actions on `cv.html`
+- All CV actions use the current PDF in `cv/Yufan Zhou-Xiamen University.pdf`
 - Open Graph and Twitter Card metadata
 
 ## Tech Stack
@@ -52,6 +53,8 @@ The homepage includes:
 ├── README.md                   # Project documentation
 ├── AGENTS.md                   # Repository contribution guidelines
 ├── resume.md                   # Separately maintained text resume
+├── cv/
+│   └── Yufan Zhou-Xiamen University.pdf  # Current CV used by cv.html
 ├── css/
 │   ├── style.css               # Shared layout, themes, and emblem watermark
 │   └── news.css                # News list and filter styles
@@ -63,7 +66,7 @@ The homepage includes:
 │   ├── avatar-placeholder.svg  # Profile image fallback
 │   ├── xmu-emblem.svg          # Vector XMU emblem
 │   ├── cv/
-│   │   └── Yufan_Zhou-Xiamen_University-2023.pdf
+│   │   └── Yufan_Zhou-Xiamen_University-2023.pdf  # Previous version; not used by cv.html
 │   └── files/
 │       ├── Certificate of Computer Software Copyright Registration.pdf
 │       ├── datang-cup-2025-proof.pdf
@@ -97,7 +100,7 @@ The fonts, jQuery, and visitor counter use external services and require network
 | News list and date label styles | `css/news.css` |
 | News filtering behavior | `js/news-filter.js` |
 | CV page layout and PDF links | `cv.html` |
-| Downloadable CV | `assets/cv/` |
+| Current downloadable CV | `cv/Yufan Zhou-Xiamen University.pdf` |
 | Profile photo | `assets/vann1.jpg` |
 | Certificate PDFs | `assets/files/` |
 | Paper figures | `paper-fig/<paper-name>/` |
@@ -105,11 +108,13 @@ The fonts, jQuery, and visitor counter use external services and require network
 
 The homepage, text resume, and PDF CV are maintained separately; update each relevant version when personal information changes.
 
+The homepage's `[CV]` link opens `cv.html`. Its embedded preview, Open PDF button, and Download button all reference the same current PDF in `cv/`. Replace that file to publish a new CV version. If you rename it, update all three references in `cv.html`; spaces in the URL are encoded as `%20`. The PDF under `assets/cv/` is the previous version.
+
 ### Theme Colors and Highlights
 
 Shared color variables are defined in `:root` and overridden in `[data-theme="dark"]` within `css/style.css`. News labels, paper badges, borders, and shadows use those variables.
 
-Use `.text-accent` for red emphasis. It currently styles the PhD opportunity notice and the `(Top 0.5%)` National Scholarship annotation, with a separate red color for each theme.
+Use `.text-accent` for red emphasis. It currently styles the research/internship opportunity notice and the `(Top 0.5%)` National Scholarship annotation, with a separate red color for each theme.
 
 ### XMU Emblem Watermark
 
