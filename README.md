@@ -51,6 +51,9 @@ The homepage includes:
 ├── cv.html                     # PDF CV viewer and download page
 ├── favicon.svg                 # Site icon
 ├── README.md                   # Project documentation
+├── _config.yml                 # Includes the Vercount verification file in GitHub Pages
+├── .well-known/
+│   └── vercount-verify-<code>.txt  # Vercount domain-ownership proof
 ├── AGENTS.md                   # Repository contribution guidelines
 ├── resume.md                   # Separately maintained text resume
 ├── cv/
@@ -97,6 +100,8 @@ The `visits` value is Vercount's total recorded page-view count (`site_pv`), inc
 Local and file previews only read the published site's count, using the canonical URL in `index.html`; they do not add visits. Failed requests are retried as read-only requests so an uncertain POST cannot count the same page load twice. If live refresh fails after a successful response, the last received real total remains visible with a tooltip marking it as stale. With no successful response yet, the placeholder is `—`.
 
 The original Busuanzi endpoint was unavailable during the migration. Vercount supports importing Busuanzi totals, but the old cumulative count could not be verified or confirmed as imported. Current numbers reflect the total actually returned by Vercount; no historical offset or fabricated count is added.
+
+To verify the site in the Vercount dashboard, switch the domain's verification method to **File Upload** and click **Check verification** after this proof file is live. Remove the one-time proof file after Vercount marks the domain verified. `_config.yml` keeps the hidden `.well-known` path in the GitHub Pages build.
 
 ## Updating Content and Appearance
 
