@@ -1,24 +1,35 @@
 /* ── Light theme (default) ── */
 :root {
   --bg-page: #f5f2ec;
-  --bg-gradient-a: rgba(29, 79, 145, 0.07);
-  --bg-gradient-b: rgba(190, 168, 122, 0.09);
+  --bg-gradient-a: rgba(50, 98, 138, 0.045);
+  --bg-gradient-b: rgba(190, 168, 122, 0.06);
   --bg-content: rgba(255, 255, 255, 0.96);
   --bg-sidenav: rgba(255, 255, 255, 0.9);
-  --border-color: #e6e0d6;
-  --border-light: #d8d8d8;
-  --divider-color: #cfc7bc;
-  --heading-color: #143a67;
+  --border-color: #e3e3df;
+  --border-light: #e3e3df;
+  --divider-color: #d6d9da;
+  --heading-color: #234b6a;
   --text-color: #4a4a4a;
   --text-secondary: #5e5e5e;
   --text-muted: #777777;
-  --link-color: #1d4f91;
-  --sidenav-text: #5d6570;
-  --shadow-sidenav: 0 16px 36px rgba(31, 44, 62, 0.08);
-  --shadow-content: 0 20px 56px rgba(31, 44, 62, 0.09);
-  --shadow-photo: 0 10px 24px rgba(20, 58, 103, 0.08);
-  --focus-ring: rgba(29, 79, 145, 0.25);
-  --counter-color: #143a67;
+  --link-color: #32628a;
+  --sidenav-text: #5b6873;
+  --accent-color: #b3423a;
+  --badge-bg: #32628a;
+  --badge-text: #ffffff;
+  --news-date-bg: #eaf0f4;
+  --news-date-text: #3c5c75;
+  --news-hover: rgba(50, 98, 138, 0.035);
+  --shadow-sidenav: 0 16px 36px rgba(31, 44, 62, 0.04);
+  --shadow-content: 0 20px 56px rgba(31, 44, 62, 0.045);
+  --shadow-photo: 0 10px 24px rgba(35, 75, 106, 0.05);
+  --shadow-paper: 0 3px 10px rgba(35, 75, 106, 0.13);
+  --shadow-news: inset 0 1px 3px rgba(35, 75, 106, 0.025);
+  --focus-ring: rgba(50, 98, 138, 0.25);
+  --counter-color: #234b6a;
+  --emblem-opacity: 0.17;
+  --emblem-filter: none;
+  --emblem-blend: multiply;
 }
 
 /* ── Dark theme (manual toggle) ── */
@@ -28,20 +39,31 @@
   --bg-gradient-b: rgba(168, 140, 90, 0.04);
   --bg-content: rgba(30, 41, 59, 0.97);
   --bg-sidenav: rgba(30, 41, 59, 0.92);
-  --border-color: #2d3a4d;
-  --border-light: #334155;
-  --divider-color: #374151;
-  --heading-color: #93c5fd;
+  --border-color: #354152;
+  --border-light: #354152;
+  --divider-color: #455269;
+  --heading-color: #a3c4de;
   --text-color: #d1d5db;
   --text-secondary: #9ca3af;
-  --text-muted: #6b7280;
-  --link-color: #60a5fa;
-  --sidenav-text: #9ca3af;
-  --shadow-sidenav: 0 16px 36px rgba(0, 0, 0, 0.3);
-  --shadow-content: 0 20px 56px rgba(0, 0, 0, 0.35);
-  --shadow-photo: 0 10px 24px rgba(0, 0, 0, 0.25);
-  --focus-ring: rgba(96, 165, 250, 0.3);
-  --counter-color: #93c5fd;
+  --text-muted: #93a1b2;
+  --link-color: #91b9da;
+  --sidenav-text: #a5b1c0;
+  --accent-color: #f19a90;
+  --badge-bg: #3b5f7d;
+  --badge-text: #f3f7fb;
+  --news-date-bg: #2b4055;
+  --news-date-text: #c2d7e8;
+  --news-hover: rgba(163, 196, 222, 0.05);
+  --shadow-sidenav: 0 16px 36px rgba(0, 0, 0, 0.18);
+  --shadow-content: 0 20px 56px rgba(0, 0, 0, 0.2);
+  --shadow-photo: 0 10px 24px rgba(0, 0, 0, 0.18);
+  --shadow-paper: 0 3px 10px rgba(0, 0, 0, 0.2);
+  --shadow-news: inset 0 1px 3px rgba(0, 0, 0, 0.08);
+  --focus-ring: rgba(145, 185, 218, 0.3);
+  --counter-color: #a3c4de;
+  --emblem-opacity: 0.17;
+  --emblem-filter: grayscale(1) invert(1);
+  --emblem-blend: screen;
 }
 
 /* ── Base ── */
@@ -115,6 +137,10 @@ h2 {
   font-family: "SimSun", "Songti SC", "STSong", serif;
 }
 
+.text-accent {
+  color: var(--accent-color);
+}
+
 .page {
   width: 100%;
   min-height: 100vh;
@@ -175,7 +201,35 @@ h2 {
   border-radius: 18px;
 }
 
+.intro-section {
+  position: relative;
+}
+
+/* Vector emblem: https://commons.wikimedia.org/wiki/File:Xiamen_University_logo.svg */
+.intro-section::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  right: 18px;
+  width: clamp(176px, 15vw, 216px);
+  aspect-ratio: 1;
+  background: url("../assets/xmu-emblem.svg") center / contain no-repeat;
+  opacity: var(--emblem-opacity);
+  filter: var(--emblem-filter);
+  mix-blend-mode: var(--emblem-blend);
+  pointer-events: none;
+  z-index: 0;
+}
+
+@media (max-width: 1139px) {
+  .intro-section::before {
+    display: none;
+  }
+}
+
 .intro {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: 180px 1fr;
   gap: 24px;
@@ -258,14 +312,14 @@ a:focus-visible {
   position: absolute;
   margin-top: 0.5em;
   margin-left: -0.5em;
-  color: #fff;
-  background-color: #00369f;
+  color: var(--badge-text);
+  background-color: var(--badge-bg);
   font-size: 0.8em;
 }
 
 .paper-box .paper-box-image img {
   max-width: 400px;
-  box-shadow: 3px 3px 6px #888;
+  box-shadow: var(--shadow-paper);
   object-fit: cover;
 }
 
@@ -466,7 +520,7 @@ a:focus-visible {
 
   .paper-box .paper-box-image img {
     max-width: 100%;
-    box-shadow: 2px 2px 4px #888;
+    box-shadow: var(--shadow-paper);
   }
 
   .visitor-counter {
