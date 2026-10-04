@@ -30,7 +30,7 @@ The homepage includes:
 - The emblem is hidden below **1140px viewport width** to leave room for profile text
 - A scrollable news list with a text filter
 - A profile image fallback if the portrait cannot load
-- Visitor page-view counter powered by [Busuanzi](https://busuanzi.ibruce.info/)
+- Visitor page-view counter powered by [Busuanzi](https://busuanzi.ibruce.info/), with a graceful unavailable state when the service cannot respond
 - Embedded PDF preview, Open PDF, and Download actions on `cv.html`
 - All CV actions use the current PDF in `cv/Yufan Zhou-Xiamen University.pdf`
 - Open Graph and Twitter Card metadata
@@ -90,6 +90,8 @@ On Windows, `py -m http.server 8000` also works if the Python launcher is instal
 Open the [local homepage](http://127.0.0.1:8000/) or the [local CV page](http://127.0.0.1:8000/cv.html). Use `Ctrl+C` in the server terminal to stop it.
 
 The fonts, jQuery, and visitor counter use external services and require network access.
+
+The `visits` value is the site's total page-view count (`site_pv`), including repeat visits. It displays `...` while loading and changes to `—` with an explanatory tooltip if the request fails or takes more than eight seconds. A valid late response restores the count. A missing number indicates unavailable statistics; it does not establish that historical counts were lost. The page uses the original Busuanzi service and does not substitute a made-up or local-only count.
 
 ## Updating Content and Appearance
 
