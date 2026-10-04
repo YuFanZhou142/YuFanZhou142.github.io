@@ -269,50 +269,7 @@
     });
   })();
 </script>
-<script>
-  (function() {
-    var countEl = document.getElementById('visitor-count');
-    var counter = countEl.parentElement;
-    var loaded = false;
-
-    function showUnavailable() {
-      if (loaded) return;
-      countEl.textContent = '—';
-      countEl.setAttribute('aria-busy', 'false');
-      countEl.setAttribute('aria-label', 'Visit count temporarily unavailable');
-      counter.title = 'Visit count temporarily unavailable. Please try again later.';
-    }
-
-    countEl.textContent = '...';
-    countEl.setAttribute('aria-busy', 'true');
-    var timeout = setTimeout(showUnavailable, 8000);
-
-    // Keep the callback available so a slow response can still restore the count.
-    window.BSZ = function(data) {
-      var count = data && data.site_pv;
-      if ((typeof count !== 'number' && typeof count !== 'string') || !/^\d+$/.test(String(count))) {
-        clearTimeout(timeout);
-        showUnavailable();
-        return;
-      }
-      loaded = true;
-      clearTimeout(timeout);
-      countEl.textContent = String(count);
-      countEl.setAttribute('aria-busy', 'false');
-      countEl.removeAttribute('aria-label');
-      counter.title = 'Total page views, including repeat visits';
-    };
-    var s = document.createElement('script');
-    s.async = true;
-    s.referrerPolicy = 'origin';
-    s.onerror = function() {
-      clearTimeout(timeout);
-      showUnavailable();
-    };
-    s.src = 'https://busuanzi.ibruce.info/busuanzi?jsonpCallback=BSZ&_=' + Date.now();
-    document.body.appendChild(s);
-  })();
-</script>
+<script src="js/visitor-counter.js"></script>
 <script>
   (function() {
     var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];

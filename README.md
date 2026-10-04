@@ -30,7 +30,7 @@ The homepage includes:
 - The emblem is hidden below **1140px viewport width** to leave room for profile text
 - A scrollable news list with a text filter
 - A profile image fallback if the portrait cannot load
-- Visitor page-view counter powered by [Busuanzi](https://busuanzi.ibruce.info/), with a graceful unavailable state when the service cannot respond
+- Live page-view counter powered by [Vercount](https://github.com/EvanNotFound/vercount): records each homepage load and refreshes the visible total every 30 seconds
 - Embedded PDF preview, Open PDF, and Download actions on `cv.html`
 - All CV actions use the current PDF in `cv/Yufan Zhou-Xiamen University.pdf`
 - Open Graph and Twitter Card metadata
@@ -59,7 +59,8 @@ The homepage includes:
 │   ├── style.css               # Shared layout, themes, and emblem watermark
 │   └── news.css                # News list and filter styles
 ├── js/
-│   └── news-filter.js          # Filters news content and displayed dates
+│   ├── news-filter.js          # Filters news content and displayed dates
+│   └── visitor-counter.js     # Records real visits and refreshes live statistics
 ├── assets/
 │   ├── vann1.jpg               # Active profile photo
 │   ├── vann.jpg                # Alternate photo, currently unused
@@ -91,7 +92,11 @@ Open the [local homepage](http://127.0.0.1:8000/) or the [local CV page](http://
 
 The fonts, jQuery, and visitor counter use external services and require network access.
 
-The `visits` value is the site's total page-view count (`site_pv`), including repeat visits. It displays `...` while loading and changes to `—` with an explanatory tooltip if the request fails or takes more than eight seconds. A valid late response restores the count. A missing number indicates unavailable statistics; it does not establish that historical counts were lost. The page uses the original Busuanzi service and does not substitute a made-up or local-only count.
+The `visits` value is Vercount's total recorded page-view count (`site_pv`), including repeat visits. Each production homepage load records one visit with a POST request. While the page is visible, read-only GET requests refresh the displayed total every 30 seconds and when returning to the page. These reads never add visits; background tabs stop polling. A first-party cookie supplies the service's new-visitor flag.
+
+Local and file previews only read the published site's count, using the canonical URL in `index.html`; they do not add visits. Failed requests are retried as read-only requests so an uncertain POST cannot count the same page load twice. If live refresh fails after a successful response, the last received real total remains visible with a tooltip marking it as stale. With no successful response yet, the placeholder is `—`.
+
+The original Busuanzi endpoint was unavailable during the migration. Vercount supports importing Busuanzi totals, but the old cumulative count could not be verified or confirmed as imported. Current numbers reflect the total actually returned by Vercount; no historical offset or fabricated count is added.
 
 ## Updating Content and Appearance
 
@@ -101,6 +106,7 @@ The `visits` value is the site's total page-view count (`site_pv`), including re
 | Shared layout, typography, colors, and shadows | `css/style.css` |
 | News list and date label styles | `css/news.css` |
 | News filtering behavior | `js/news-filter.js` |
+| Live visitor counting and refresh interval | `js/visitor-counter.js` |
 | CV page layout and PDF links | `cv.html` |
 | Current downloadable CV | `cv/Yufan Zhou-Xiamen University.pdf` |
 | Profile photo | `assets/vann1.jpg` |
@@ -146,7 +152,7 @@ There is no automated test framework. Preview relevant changes in a browser:
 - Theme persistence after refreshing and switching between the homepage and CV
 - Section navigation, news filtering, and external links
 - Images, the portrait fallback, certificate PDFs, and CV open/download actions
-- The visitor counter when its external service is available
+- The live visitor counter, including a real page-load increment and read-only refreshes without extra increments
 - Before/after screenshots for visual changes and the browser console for new errors
 
 Before committing:
@@ -169,7 +175,7 @@ git pull --ff-only origin main
 After editing and running the checks above, stage the intended files, including the current PDF when it changes. For a combined homepage, styling, CV, and documentation update:
 
 ```powershell
-git add index.html cv.html css/style.css css/news.css assets/xmu-emblem.svg "cv/Yufan Zhou-Xiamen University.pdf" README.md
+git add index.html cv.html css/style.css css/news.css js/news-filter.js js/visitor-counter.js assets/xmu-emblem.svg "cv/Yufan Zhou-Xiamen University.pdf" README.md
 git diff --cached --check
 git commit -m "Update homepage, CV, and documentation"
 git push origin main
