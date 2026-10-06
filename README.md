@@ -25,6 +25,7 @@ The homepage includes:
 
 - Sticky sidebar navigation on desktop; links wrap into a horizontal navigation area on smaller screens
 - Light and dark themes with `localStorage` persistence on both the homepage and CV page
+- A very pale XMU-blue page background (`#f4f8fd`) with subtle blue-tinted gradients in light mode
 - Coordinated blue colors, readable news date labels, subtle shadows, and theme-aware red highlights
 - A vector XMU emblem watermark in the profile area's upper-right corner, at **10% opacity** in both themes
 - The emblem is hidden below **1140px viewport width** to leave room for profile text
@@ -118,7 +119,7 @@ Use `index.html` as the source for current homepage wording. Pull the latest `ma
 
 ### Theme Colors and Highlights
 
-Shared color variables are defined in `:root` and overridden in `[data-theme="dark"]` within `css/style.css`. News labels, paper badges, borders, and shadows use those variables.
+Shared color variables are defined in `:root` and overridden in `[data-theme="dark"]` within `css/style.css`. The light theme uses a very pale XMU-blue page background (`#f4f8fd`) with subtle blue gradients; the dark theme keeps its existing dark background. News labels, paper badges, borders, and shadows use the shared variables.
 
 Use `.text-accent` for red emphasis. It currently styles the industrial research/foundation model internship and collaboration notice, and the National Scholarship annotation displayed as `(Top 0.2%)` on the homepage. Each theme has its own red color.
 
