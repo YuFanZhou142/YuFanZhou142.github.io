@@ -1,6 +1,6 @@
-# Yufan(Vann) Zhou - 周于番 Homepage
+# Yufan(Vann) Zhou — 周于番 Homepage
 
-Source code for the personal academic website of Yufan(Vann) Zhou - 周于番, a Communication Engineering undergraduate at the School of Informatics, Xiamen University.
+Source code for the personal academic website of Yufan(Vann) Zhou — 周于番, a Communication Engineering undergraduate at the School of Informatics, Xiamen University.
 
 - [Homepage](https://yufanzhou142.github.io/)
 - [CV page](https://yufanzhou142.github.io/cv.html)
