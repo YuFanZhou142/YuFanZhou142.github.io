@@ -139,6 +139,17 @@ h2 {
   color: var(--accent-color);
 }
 
+.motto {
+  margin: 4px 0 6px;
+  padding: 14px 0 14px 22px;
+  border-left: 3px solid var(--link-color);
+  color: var(--heading-color);
+  font-family: "Caveat", "Segoe Script", "Bradley Hand", cursive;
+  font-size: 1.45rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
 .page {
   width: 100%;
   min-height: 100vh;
@@ -492,6 +503,11 @@ a:focus-visible {
 
   h2 {
     font-size: 1.3rem;
+  }
+
+  .motto {
+    font-size: 1.22rem;
+    padding: 12px 0 12px 18px;
   }
 
   .paper-box .paper-box-image img {

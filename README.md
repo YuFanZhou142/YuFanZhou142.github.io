@@ -13,6 +13,7 @@ The homepage includes:
 
 - Profile photo, contact details, academic/social links, and a `[CV]` link to the CV page
 - About Me, research interests, and availability for industrial research/foundation model internships and research collaborations
+- A handwritten motto between the About Me notice and News, set in Caveat with a theme-blue left rule
 - News with filtering by content or displayed date
 - Selected Papers with a venue badge, figure, authors, summary, and paper/code links
 - Educations and Research Intern
@@ -39,7 +40,7 @@ The homepage includes:
 - Plain HTML, CSS, and JavaScript
 - CSS custom properties for light/dark theme colors and decorative effects
 - jQuery 3.7.1, loaded from a CDN, for the news filter
-- Crimson Pro and IBM Plex Mono fonts from Google Fonts
+- Crimson Pro, Caveat, and IBM Plex Mono fonts from Google Fonts
 - GitHub Pages publishing from the root of the `main` branch
 
 ## Project Structure
@@ -122,6 +123,16 @@ Shared color variables are defined in `:root` and overridden in `[data-theme="da
 
 Use `.text-accent` for red emphasis. It currently styles the industrial research/foundation model internship and collaboration notice, and the National Scholarship annotation displayed as `(Top 0.2%)` on the homepage. Each theme has its own red color.
 
+Red is deliberately scoped to those two emphasis spots only. Everything structural, including links, headings, and the About Me motto's left rule, uses the blue `--link-color` and `--heading-color` variables instead.
+
+### About Me Motto
+
+The `.motto` paragraph sits between the closing About Me notice and the News heading in `index.html`. It is set in Caveat at `1.45rem`/`1.5`, colored with `--heading-color`, and marked by a `3px` left rule in `--link-color`.
+
+`font-style: italic` is intentionally not set. Caveat already carries a handwritten slant, and adding italic produces a fake-looking double slant. If the Google Fonts request fails, the stack falls back to Segoe Script or Bradley Hand before the generic `cursive`, so the line still reads as handwriting rather than reverting to the body font.
+
+The font size steps down to `1.22rem` below `768px` so the line does not wrap awkwardly on narrow screens.
+
 ### XMU Emblem Watermark
 
 The watermark uses the [Xiamen University logo SVG from Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Xiamen_University_logo.svg), checked against the [official university identity page](https://www.xmu.edu.cn/sdgl/xxbs.htm). It contains vector paths and no embedded bitmap.
@@ -129,7 +140,7 @@ The watermark uses the [Xiamen University logo SVG from Wikimedia Commons](https
 Its appearance is controlled by:
 
 - `.intro-section::before`: placement and responsive size
-- `--emblem-opacity`: currently `0.17` in both themes
+- `--emblem-opacity`: currently `0.10` in both themes
 - `--emblem-filter` and `--emblem-blend`: theme-specific rendering
 - The `max-width: 1139px` media query: hides the watermark on narrower screens
 
@@ -143,7 +154,6 @@ There is no automated test framework. Preview relevant changes in a browser:
 - Theme persistence after refreshing and switching between the homepage and CV
 - Section navigation, news filtering, and external links
 - Images, the portrait fallback, certificate PDFs, and CV open/download actions
-- The live visitor counter, including a real page-load increment and read-only refreshes without extra increments
 - Before/after screenshots for visual changes and the browser console for new errors
 
 Before committing:
