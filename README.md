@@ -15,7 +15,8 @@ The homepage includes:
 - About Me, research interests, and availability for industrial research/foundation model internships and research collaborations
 - A handwritten motto between the About Me notice and News, set in Caveat with a theme-blue left rule
 - News with filtering by content or displayed date
-- Selected Papers with a venue badge, figure, authors, summary, and paper/code links
+- Selected Papers with a venue badge, figure, authors, summary, and paper/code/video links
+- The GS³-ICL Video link opens the ACM ICMR 2026 presentation from the beginning
 - Educations and Research Intern
 - Competitions & Patents with supporting certificate PDFs
 - Achievements, including the highlighted National Scholarship award proportion
@@ -152,7 +153,7 @@ There is no automated test framework. Preview relevant changes in a browser:
 
 - Desktop and narrow mobile layouts, in both light and dark themes
 - Theme persistence after refreshing and switching between the homepage and CV
-- Section navigation, news filtering, and external links
+- Section navigation, news filtering, paper/code/video links, and external links
 - Images, the portrait fallback, certificate PDFs, and CV open/download actions
 - Before/after screenshots for visual changes and the browser console for new errors
 
