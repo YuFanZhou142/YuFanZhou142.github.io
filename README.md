@@ -15,7 +15,8 @@ The homepage includes:
 - About Me, research interests, and availability for industrial research/foundation model internships and research collaborations
 - A handwritten motto between the About Me notice and News, set in Caveat with a theme-blue left rule
 - News with filtering by content or displayed date
-- Selected Papers with a venue badge, figure, authors, summary, and paper/code/video links
+- Publications grouped into First Author, Others, and Patent; the patent entry lists all inventors, its Chinese title, the English patent type, Patent No. ZL 2026 1 0206118.2, and the certificate PDF
+- Paper entries with a venue badge, figure, authors, summary, and paper/code/video links
 - The GS³-ICL Video link opens the ACM ICMR 2026 presentation from the beginning
 - Educations and Research Intern
 - Competitions & Patents with supporting certificate PDFs
@@ -70,6 +71,7 @@ The homepage includes:
 │   │   └── Yufan_Zhou-Xiamen_University-2023.pdf  # Previous version; not used by cv.html
 │   └── files/
 │       ├── Certificate of Computer Software Copyright Registration.pdf
+│       ├── chinese-invention-patent-2026-certificate.pdf
 │       ├── datang-cup-2025-proof.pdf
 │       ├── embedded-competition-2025-proof.pdf
 │       └── math-modeling-2025-proof.pdf
@@ -96,7 +98,7 @@ The fonts and jQuery use external services and require network access.
 
 | What to change | Where to edit |
 | --- | --- |
-| Profile, news, papers, experiences, awards, and Services | `index.html` |
+| Profile, news, publications, experiences, awards, and Services | `index.html` |
 | Shared layout, typography, colors, and shadows | `css/style.css` |
 | News list and date label styles | `css/news.css` |
 | News filtering behavior | `js/news-filter.js` |

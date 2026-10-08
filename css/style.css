@@ -139,6 +139,14 @@ h2 {
   color: var(--accent-color);
 }
 
+.publication-subheading {
+  margin: 24px 0 10px;
+  color: var(--heading-color);
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
 .motto {
   margin: 4px 0 6px;
   padding: 14px 0 14px 22px;
@@ -301,7 +309,6 @@ a:focus-visible {
 .paper-box {
   display: flex;
   align-items: center;
-  border-bottom: 1px solid var(--border-color);
   padding: 2em 0 2em 0;
 }
 
@@ -529,5 +536,3 @@ a:focus-visible {
     font-size: 1.5rem;
   }
 }
-
-

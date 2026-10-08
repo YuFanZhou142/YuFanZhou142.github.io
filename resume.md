@@ -49,7 +49,8 @@ Xiamen University (XMU) | Sept. 2023 - Present
 
 ### Chinese Invention Patent (3rd Inventor)
 **Title:** 一种多模态融合采算通一体水声有线双模通信系统及方法
-**Date:** Mar. 2026
+**Patent No.:** ZL 2026 1 0206118.2
+**Date:** Apr. 2026
 
 ### Computer Software Copyright (1st Author)
 **Title:** 面向海底地震仪应用的地声信号采集模块软件V1.0
