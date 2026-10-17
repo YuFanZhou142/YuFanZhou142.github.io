@@ -11,7 +11,7 @@ The site is a static homepage with a separate PDF CV viewer. It runs directly on
 
 The homepage includes:
 
-- Profile photo, contact details, academic/social links, and a `[CV]` link to the CV page
+- Profile photo, contact details, and academic/social links (GitHub, X, ORCID, Google Scholar, LinkedIn)
 - About Me, research interests, and availability for industrial research/foundation model internships and research collaborations
 - A handwritten motto between the About Me notice and News, set in Caveat with a theme-blue left rule
 - News with filtering by content or displayed date
@@ -111,7 +111,7 @@ The fonts and jQuery use external services and require network access.
 
 ### Current CV and Version Management
 
-The homepage's `[CV]` link opens `cv.html`. Its embedded preview, Open PDF button, and Download button all reference **`cv/Yufan Zhou-Xiamen University.pdf`**, the current published CV. The supplied PDF is published as-is; linking or deploying it does not rewrite its text or layout.
+`cv.html` is a standalone PDF CV viewer, reachable directly by URL. Its embedded preview, Open PDF button, and Download button all reference **`cv/Yufan Zhou-Xiamen University.pdf`**, the current published CV. The supplied PDF is published as-is; linking or deploying it does not rewrite its text or layout.
 
 - Replace the PDF at that path to publish a new CV version, and include the PDF in the commit.
 - If the file is renamed, update all three references in `cv.html`. Spaces in its URL are encoded as `%20`.
@@ -187,13 +187,14 @@ git push origin main
 
 If GitHub receives another commit before the push, fetch and integrate those changes before pushing again. Preserve remote content edits when resolving any conflicts.
 
-GitHub Pages deployment starts after the push; publishing can take a few minutes. Confirm that **pages build and deployment** succeeds in GitHub Actions, then check the live homepage's `[CV]` link and the CV preview/download. Run `git status --short --branch` to confirm the local checkout is clean and synchronized with `origin/main`.
+GitHub Pages deployment starts after the push; publishing can take a few minutes. Confirm that **pages build and deployment** succeeds in GitHub Actions, then check the live homepage's links and the CV preview/download. Run `git status --short --branch` to confirm the local checkout is clean and synchronized with `origin/main`.
 
 ## Links
 
 - [Homepage](https://yufanzhou142.github.io/)
 - [CV](https://yufanzhou142.github.io/cv.html)
 - [GitHub](https://github.com/YuFanZhou142)
+- [LinkedIn](https://www.linkedin.com/in/yufan-zhou-042987370/)
 - [Google Scholar](https://scholar.google.com/citations?user=rvM9Z9IAAAAJ&hl=zh-CN)
 - [X](https://x.com/vannvann142)
 - [ORCID](https://orcid.org/0009-0006-8266-0839)
