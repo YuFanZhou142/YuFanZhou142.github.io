@@ -125,7 +125,7 @@ Use `index.html` as the source for current homepage wording. Pull the latest `ma
 
 Shared color variables are defined in `:root` and overridden in `[data-theme="dark"]` within `css/style.css`. News labels, paper badges, borders, and shadows use those variables.
 
-Use `.text-accent` for red emphasis. It currently styles the industrial research/foundation model internship and collaboration notice, and the National Scholarship annotation displayed as `(Top 0.2%)` on the homepage. Each theme has its own red color.
+Use `.text-accent` for red emphasis. It currently styles the industrial research/foundation model internship and collaboration notice, and the National Scholarship annotation displayed as `(top 0.2%, China's highest national honor for university students)` on the homepage. Each theme has its own red color.
 
 Red is deliberately scoped to those two emphasis spots only. Everything structural, including links, headings, and the About Me motto's left rule, uses the blue `--link-color` and `--heading-color` variables instead.
 
