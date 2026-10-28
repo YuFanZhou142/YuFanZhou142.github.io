@@ -19,7 +19,7 @@ The homepage includes:
 - Paper entries with a venue badge, figure, authors, summary, and paper/code/video links
 - The GS³-ICL Video link opens the ACM ICMR 2026 presentation from the beginning
 - Educations and Research Intern
-- Competitions & Patents with supporting certificate PDFs
+- Competitions & Others with supporting certificate PDFs
 - Achievements, including the highlighted National Scholarship award proportion
 - Services with Conference Reviewer and Journal Reviewer entries
 - Misc for personal interests
