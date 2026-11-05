@@ -23,11 +23,13 @@ The homepage includes:
 - Achievements, including the highlighted National Scholarship award proportion
 - Services with Conference Reviewer and Journal Reviewer entries
 - Misc for personal interests
+- Blog posts placeholder section at the end of the page, ready for entries
 
 ## Features
 
 - Sticky sidebar navigation on desktop; links wrap into a horizontal navigation area on smaller screens
 - The sidebar starts at About Me with no separate Home entry; the profile block at the top of the page serves as the home view, and `#top` remains available as an anchor
+- The sidebar panel carries no "Navigation" heading; its link list ends with Blog posts, which anchors to the placeholder section at the bottom of the page
 - Light and dark themes with `localStorage` persistence on both the homepage and CV page
 - Coordinated blue colors, readable news date labels, subtle shadows, and theme-aware red highlights
 - A vector XMU emblem watermark in the profile area's upper-right corner, at **10% opacity** in both themes

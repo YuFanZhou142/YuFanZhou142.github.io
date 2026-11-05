@@ -186,14 +186,6 @@ h2 {
   border-radius: 16px;
 }
 
-.side-nav-title {
-  margin-bottom: 8px;
-  color: var(--heading-color);
-  font-size: 0.98rem;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-}
-
 .side-nav a {
   display: block;
   padding: 6px 0;
@@ -434,11 +426,6 @@ a:focus-visible {
     flex-wrap: wrap;
     align-items: center;
     gap: 10px 16px;
-  }
-
-  .side-nav-title {
-    width: 100%;
-    margin-bottom: 0;
   }
 
   .content {
