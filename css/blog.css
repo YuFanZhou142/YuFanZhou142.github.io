@@ -14,11 +14,6 @@
   padding: 34px 40px 44px;
 }
 
-/* Article pages keep a narrower measure for reading */
-.article-page {
-  width: min(920px, calc(100% - 32px));
-}
-
 .blog-topbar {
   display: flex;
   align-items: center;
