@@ -101,11 +101,11 @@
 }
 
 .archive-meta {
-  margin-top: 4px;
-  color: var(--text-muted);
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 0.74rem;
-  letter-spacing: 0.02em;
+  margin-top: 5px;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  font-style: italic;
+  line-height: 1.4;
 }
 
 .archive-excerpt {
@@ -124,13 +124,12 @@
 }
 
 .article-meta {
-  margin: 0 0 24px;
+  margin: 0 0 26px;
   padding-bottom: 16px;
   border-bottom: 1px solid var(--border-light);
-  color: var(--text-muted);
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 0.74rem;
-  letter-spacing: 0.02em;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  font-style: italic;
 }
 
 .article-body p {
