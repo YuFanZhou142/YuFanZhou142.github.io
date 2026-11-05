@@ -4,10 +4,11 @@ Source code for the personal academic website of Yufan(Vann) Zhou — 周于番,
 
 - [Homepage](https://yufanzhou142.github.io/)
 - [CV page](https://yufanzhou142.github.io/cv.html)
+- [Blog](https://yufanzhou142.github.io/blog.html)
 
 ## Overview
 
-The site is a static homepage with a separate PDF CV viewer. It runs directly on GitHub Pages without a build step or package installation.
+The site is a static homepage with separate PDF CV and blog pages. It runs directly on GitHub Pages without a build step or package installation.
 
 The homepage includes:
 
@@ -23,14 +24,15 @@ The homepage includes:
 - Achievements, including the highlighted National Scholarship award proportion
 - Services with Conference Reviewer and Journal Reviewer entries
 - Misc for personal interests
-- Blog posts placeholder section at the end of the page, ready for entries
+
+Blog posts are not listed on the homepage; they live on the standalone `blog.html` page, which the sidebar opens.
 
 ## Features
 
 - Sticky sidebar navigation on desktop; links wrap into a horizontal navigation area on smaller screens
 - The sidebar starts at About Me with no separate Home entry; the profile block at the top of the page serves as the home view, and `#top` remains available as an anchor
-- The sidebar panel carries no "Navigation" heading; its link list ends with Blog posts, which anchors to the placeholder section at the bottom of the page
-- Light and dark themes with `localStorage` persistence on both the homepage and CV page
+- The sidebar panel carries no "Navigation" heading; its link list ends with Blog posts, which opens the standalone `blog.html` page rather than jumping to a homepage section
+- Light and dark themes with `localStorage` persistence across the homepage, CV, and blog pages
 - Coordinated blue colors, readable news date labels, subtle shadows, and theme-aware red highlights
 - A vector XMU emblem watermark in the profile area's upper-right corner, at **10% opacity** in both themes
 - The emblem is hidden below **1140px viewport width** to leave room for profile text
@@ -54,6 +56,7 @@ The homepage includes:
 .
 ├── index.html                  # Homepage content, metadata, and inline scripts
 ├── cv.html                     # PDF CV viewer and download page
+├── blog.html                   # Blog posts list, with per-page styles
 ├── favicon.svg                 # Site icon
 ├── README.md                   # Project documentation
 ├── AGENTS.md                   # Repository contribution guidelines
@@ -93,7 +96,7 @@ python -m http.server 8000
 
 On Windows, `py -m http.server 8000` also works if the Python launcher is installed. Any static HTTP server can be used instead.
 
-Open the [local homepage](http://127.0.0.1:8000/) or the [local CV page](http://127.0.0.1:8000/cv.html). Use `Ctrl+C` in the server terminal to stop it.
+Open the [local homepage](http://127.0.0.1:8000/), the [local CV page](http://127.0.0.1:8000/cv.html), or the [local blog page](http://127.0.0.1:8000/blog.html). Use `Ctrl+C` in the server terminal to stop it.
 
 The fonts and jQuery use external services and require network access.
 
@@ -106,6 +109,7 @@ The fonts and jQuery use external services and require network access.
 | News list and date label styles | `css/news.css` |
 | News filtering behavior | `js/news-filter.js` |
 | CV page layout and PDF links | `cv.html` |
+| Blog post entries and blog page styles | `blog.html` |
 | Current downloadable CV | `cv/Yufan Zhou-Xiamen University.pdf` |
 | Profile photo | `assets/vann1.jpg` |
 | Certificate PDFs | `assets/files/` |
@@ -122,6 +126,21 @@ The fonts and jQuery use external services and require network access.
 - `resume.md` is a separately maintained text resume. Neither the homepage nor the PDF viewer renders it, and it is not automatically synchronized with the PDF.
 
 Use `index.html` as the source for current homepage wording. Pull the latest `main` before editing locally so that changes made on GitHub are preserved.
+
+### Blog Page
+
+`blog.html` is a standalone list page opened from the sidebar entry **Blog posts**; nothing about the blog appears on the homepage. It shares `css/style.css` and adds a small `<style>` block for the post list.
+
+To publish a post, replace the `.post-empty` placeholder with an `<li class="post-item">` inside `.post-list`:
+
+```html
+<li class="post-item">
+  <span class="post-date">Nov. 2026</span>
+  <a class="post-title" href="posts/first-post.html">Post title</a>
+</li>
+```
+
+Entries render in source order, so keep the newest first. The `href` can point at a page under a new `posts/` directory or at an external URL; the date label uses the same `IBM Plex Mono` treatment as the news dates.
 
 ### Theme Colors and Highlights
 
@@ -182,7 +201,7 @@ git pull --ff-only origin main
 After editing and running the checks above, stage the intended files, including the current PDF when it changes. For a combined homepage, styling, CV, and documentation update:
 
 ```powershell
-git add index.html cv.html css/style.css css/news.css js/news-filter.js assets/xmu-emblem.svg "cv/Yufan Zhou-Xiamen University.pdf" README.md
+git add index.html cv.html blog.html css/style.css css/news.css js/news-filter.js assets/xmu-emblem.svg "cv/Yufan Zhou-Xiamen University.pdf" README.md
 git diff --cached --check
 git commit -m "Update homepage, CV, and documentation"
 git push origin main
@@ -196,6 +215,7 @@ GitHub Pages deployment starts after the push; publishing can take a few minutes
 
 - [Homepage](https://yufanzhou142.github.io/)
 - [CV](https://yufanzhou142.github.io/cv.html)
+- [Blog](https://yufanzhou142.github.io/blog.html)
 - [GitHub](https://github.com/YuFanZhou142)
 - [LinkedIn](https://www.linkedin.com/in/yufan-zhou-042987370/)
 - [Google Scholar](https://scholar.google.com/citations?user=rvM9Z9IAAAAJ&hl=zh-CN)

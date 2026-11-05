@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Yufan Zhou — Blog posts</title>
+  <meta name="description" content="Blog posts by Yufan Zhou (Vann), a Communication Engineering student at Xiamen University, on multimodal reasoning, LLM/VLM hallucination, and agent systems.">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="canonical" href="https://yufanzhou142.github.io/blog.html">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Yufan Zhou — Blog posts">
+  <meta property="og:description" content="Blog posts by Yufan Zhou (Vann) on multimodal reasoning, LLM/VLM hallucination, and agent systems.">
+  <meta property="og:url" content="https://yufanzhou142.github.io/blog.html">
+  <meta property="og:image" content="https://yufanzhou142.github.io/assets/vann1.jpg">
+  <meta property="og:site_name" content="Vann(Yufan) Zhou">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Yufan Zhou — Blog posts">
+  <meta name="twitter:description" content="Blog posts by Yufan Zhou (Vann) on multimodal reasoning, LLM/VLM hallucination, and agent systems.">
+  <meta name="twitter:image" content="https://yufanzhou142.github.io/assets/vann1.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .blog-page .content {
+      max-width: 1000px;
+    }
+    .blog-header {
+      margin-bottom: 8px;
+    }
+    .blog-intro {
+      margin-bottom: 26px;
+      color: var(--text-secondary);
+    }
+    .post-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      border-top: 1px solid var(--border-light);
+    }
+    .post-item {
+      display: flex;
+      align-items: baseline;
+      gap: 18px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .post-date {
+      flex: 0 0 92px;
+      color: var(--text-muted);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.76rem;
+      letter-spacing: 0.02em;
+    }
+    .post-title {
+      font-size: 1.05rem;
+      line-height: 1.4;
+    }
+    .post-empty {
+      padding: 22px 0;
+      border-bottom: 1px solid var(--border-light);
+      color: var(--text-muted);
+    }
+    .blog-footer {
+      margin-top: 26px;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+    @media print, screen and (max-width: 640px) {
+      .post-item {
+        flex-direction: column;
+        gap: 4px;
+      }
+      .post-date {
+        flex: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page blog-page">
+    <div class="layout">
+      <aside class="side-nav" aria-label="Section navigation">
+        <a href="index.html#top">Home</a>
+        <a href="index.html#about">About Me</a>
+        <a href="index.html#news">News</a>
+        <a href="index.html#papers">Selected Papers</a>
+        <a href="index.html#educations">Educations</a>
+        <a href="index.html#research-intern">Research Intern</a>
+        <a href="index.html#competitions">Competitions &amp; Others</a>
+        <a href="index.html#achievements">Achievements</a>
+        <a href="index.html#service">Services</a>
+        <a href="index.html#misc">Misc</a>
+        <a href="blog.html" aria-current="page">Blog posts</a>
+        <div class="theme-toggle">
+          <button type="button" class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle dark mode">
+            <span class="icon" id="theme-icon">🌙</span>
+            <span id="theme-label">Dark</span>
+          </button>
+        </div>
+      </aside>
+
+      <div class="content">
+        <section id="top" class="section-block">
+          <h1 class="blog-header">Blog posts</h1>
+          <p class="blog-intro">
+            Notes and longer-form write-ups on multimodal reasoning, hallucination in LLM/VLM, and agent systems.
+          </p>
+
+          <ul class="post-list">
+            <li class="post-empty">No posts yet.</li>
+          </ul>
+
+          <p class="blog-footer">
+            <a href="index.html">&larr; Back to Homepage</a>
+          </p>
+        </section>
+      </div>
+    </div>
+  </div>
+
+<script>
+  (function() {
+    var root = document.documentElement;
+    var btn = document.getElementById('theme-toggle');
+    var icon = document.getElementById('theme-icon');
+    var label = document.getElementById('theme-label');
+
+    function getStored() { return localStorage.getItem('theme'); }
+    function isDark() { return getStored() === 'dark'; }
+
+    function apply(dark) {
+      if (dark) {
+        root.setAttribute('data-theme', 'dark');
+        icon.textContent = '☀️';
+        label.textContent = 'Light';
+      } else {
+        root.setAttribute('data-theme', 'light');
+        icon.textContent = '🌙';
+        label.textContent = 'Dark';
+      }
+      document.querySelector('meta[name="theme-color"]')
+        .setAttribute('content', dark ? '#111827' : '#ffffff');
+    }
+
+    apply(isDark());
+
+    btn.addEventListener('click', function() {
+      var next = !isDark();
+      localStorage.setItem('theme', next ? 'dark' : 'light');
+      apply(next);
+    });
+  })();
+</script>
+</body>
+</html>
