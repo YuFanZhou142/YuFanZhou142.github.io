@@ -32,7 +32,7 @@ Blog posts are not listed on the homepage; they live on the standalone `blog.htm
 - Sticky sidebar navigation on desktop; links wrap into a horizontal navigation area on smaller screens
 - The sidebar starts at About Me with no separate Home entry; the profile block at the top of the page serves as the home view, and `#top` remains available as an anchor
 - The sidebar panel carries no "Navigation" heading; its link list ends with Blog posts, which opens the standalone `blog.html` page rather than jumping to a homepage section
-- The blog page drops the sidebar entirely: a single centered column, with a compact theme toggle beside the page title
+- The blog page drops the sidebar entirely: a single centered column, a compact theme toggle beside the page title, and posts grouped under year labels
 - Light and dark themes with `localStorage` persistence across the homepage, CV, and blog pages
 - Coordinated blue colors, readable news date labels, subtle shadows, and theme-aware red highlights
 - A vector XMU emblem watermark in the profile area's upper-right corner, at **10% opacity** in both themes
@@ -57,7 +57,9 @@ Blog posts are not listed on the homepage; they live on the standalone `blog.htm
 .
 ├── index.html                  # Homepage content, metadata, and inline scripts
 ├── cv.html                     # PDF CV viewer and download page
-├── blog.html                   # Blog posts list, with per-page styles
+├── blog.html                   # Year archive of blog posts
+├── posts/
+│   └── starting-a-research-notebook.html  # First post; doubles as the article template
 ├── favicon.svg                 # Site icon
 ├── README.md                   # Project documentation
 ├── AGENTS.md                   # Repository contribution guidelines
@@ -66,7 +68,8 @@ Blog posts are not listed on the homepage; they live on the standalone `blog.htm
 │   └── Yufan Zhou-Xiamen University.pdf  # Current CV used by cv.html
 ├── css/
 │   ├── style.css               # Shared layout, themes, and emblem watermark
-│   └── news.css                # News list and filter styles
+│   ├── news.css                # News list and filter styles
+│   └── blog.css                # Blog archive and article typography
 ├── js/
 │   └── news-filter.js          # Filters news content and displayed dates
 ├── assets/
@@ -110,7 +113,9 @@ The fonts and jQuery use external services and require network access.
 | News list and date label styles | `css/news.css` |
 | News filtering behavior | `js/news-filter.js` |
 | CV page layout and PDF links | `cv.html` |
-| Blog post entries and blog page styles | `blog.html` |
+| Blog post entries | `blog.html` |
+| Blog archive, article typography, and post layout | `css/blog.css` |
+| Post pages | `posts/` |
 | Current downloadable CV | `cv/Yufan Zhou-Xiamen University.pdf` |
 | Profile photo | `assets/vann1.jpg` |
 | Certificate PDFs | `assets/files/` |
@@ -130,18 +135,24 @@ Use `index.html` as the source for current homepage wording. Pull the latest `ma
 
 ### Blog Page
 
-`blog.html` is a standalone list page opened from the sidebar entry **Blog posts**; nothing about the blog appears on the homepage. The page itself has no sidebar navigation: it is a single centered column, and the only global control is a compact theme toggle beside the title. It shares `css/style.css` and adds a small `<style>` block for the column width, top bar, and post list.
+`blog.html` is a year archive opened from the sidebar entry **Blog posts**; nothing about the blog appears on the homepage. The page has no sidebar: it is a single centered column, with a compact theme toggle beside the title. Styles live in `css/blog.css`, shared with the article pages.
 
-To publish a post, replace the `.post-empty` placeholder with an `<li class="post-item">` inside `.post-list`:
+Posts sit under a year label, newest first within each year. Every entry carries the title, a `date · N min read` line, and a one-sentence excerpt:
 
 ```html
-<li class="post-item">
-  <span class="post-date">Nov. 2026</span>
-  <a class="post-title" href="posts/first-post.html">Post title</a>
-</li>
+<section class="archive-year">
+  <h2 class="archive-year-label">2026</h2>
+  <ul class="archive-list">
+    <li class="archive-item">
+      <a class="archive-title" href="posts/my-post.html">Post title</a>
+      <div class="archive-meta">Nov. 12, 2026 · 3 min read</div>
+      <p class="archive-excerpt">One sentence on what the post covers.</p>
+    </li>
+  </ul>
+</section>
 ```
 
-Entries render in source order, so keep the newest first. The `href` can point at a page under a new `posts/` directory or at an external URL; the date label uses the same `IBM Plex Mono` treatment as the news dates.
+To publish a post, copy `posts/starting-a-research-notebook.html` and change its title, `description`, canonical URL, `.article-meta` line, and body; then add an `.archive-item` under the matching year in `blog.html`, creating a new `.archive-year` block when the year changes. Article pages reuse `.article-title`, `.article-meta`, and `.article-body` from `css/blog.css`, and link back to the archive through `.article-back`.
 
 ### Theme Colors and Highlights
 

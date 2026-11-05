@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Starting a research notebook — Yufan Zhou</title>
+  <meta name="description" content="Why I am putting paper notes, reproduction logs, and dead ends in public instead of a private folder.">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="canonical" href="https://yufanzhou142.github.io/posts/starting-a-research-notebook.html">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Starting a research notebook">
+  <meta property="og:description" content="Why I am putting paper notes, reproduction logs, and dead ends in public instead of a private folder.">
+  <meta property="og:url" content="https://yufanzhou142.github.io/posts/starting-a-research-notebook.html">
+  <meta property="og:image" content="https://yufanzhou142.github.io/assets/vann1.jpg">
+  <meta property="og:site_name" content="Vann(Yufan) Zhou">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+</head>
+<body>
+  <div class="page blog-page">
+    <div class="content">
+      <div class="blog-topbar">
+        <a class="article-back" href="../blog.html">&larr; Blog posts</a>
+        <button type="button" class="theme-toggle-btn blog-theme" id="theme-toggle" aria-label="Toggle dark mode">
+          <span class="icon" id="theme-icon">🌙</span>
+          <span id="theme-label">Dark</span>
+        </button>
+      </div>
+
+      <article>
+        <h1 class="article-title">Starting a research notebook</h1>
+        <p class="article-meta">Nov. 5, 2026 · 1 min read</p>
+
+        <div class="article-body">
+          <p>
+            Most of what I read and run disappears within a week — a paper I skimmed, a run that diverged
+            overnight, a bug that ate an afternoon. This page is where I keep the parts worth keeping.
+          </p>
+          <p>
+            The format is deliberately small. Short notes on papers: what the method actually does, what it
+            measures, where the evaluation looks thin. Logs of reproductions: what broke, what fixed it, which
+            numbers moved. Occasionally something longer, when a topic deserves more than a paragraph.
+          </p>
+          <p>
+            Writing in public is the point. A claim I would wave through in a private notebook has to survive
+            being written in sentences someone else can read.
+          </p>
+
+          <h2>What will not appear here</h2>
+          <p>
+            No generated summaries posted unread. No numbers I have not run myself. Guesses are labelled as
+            guesses.
+          </p>
+          <p>
+            There is no schedule. Entries are listed newest first on the <a href="../blog.html">blog page</a>.
+          </p>
+        </div>
+      </article>
+
+      <p class="blog-footer">
+        <a href="../blog.html">&larr; Back to Blog posts</a>
+      </p>
+    </div>
+  </div>
+
+<script>
+  (function() {
+    var root = document.documentElement;
+    var btn = document.getElementById('theme-toggle');
+    var icon = document.getElementById('theme-icon');
+    var label = document.getElementById('theme-label');
+
+    function getStored() { return localStorage.getItem('theme'); }
+    function isDark() { return getStored() === 'dark'; }
+
+    function apply(dark) {
+      if (dark) {
+        root.setAttribute('data-theme', 'dark');
+        icon.textContent = '☀️';
+        label.textContent = 'Light';
+      } else {
+        root.setAttribute('data-theme', 'light');
+        icon.textContent = '🌙';
+        label.textContent = 'Dark';
+      }
+      document.querySelector('meta[name="theme-color"]')
+        .setAttribute('content', dark ? '#111827' : '#ffffff');
+    }
+
+    apply(isDark());
+
+    btn.addEventListener('click', function() {
+      var next = !isDark();
+      localStorage.setItem('theme', next ? 'dark' : 'light');
+      apply(next);
+    });
+  })();
+</script>
+</body>
+</html>
