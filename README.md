@@ -32,6 +32,7 @@ Blog posts are not listed on the homepage; they live on the standalone `blog.htm
 - Sticky sidebar navigation on desktop; links wrap into a horizontal navigation area on smaller screens
 - The sidebar starts at About Me with no separate Home entry; the profile block at the top of the page serves as the home view, and `#top` remains available as an anchor
 - The sidebar panel carries no "Navigation" heading; its link list ends with Blog posts, which opens the standalone `blog.html` page rather than jumping to a homepage section
+- The blog page drops the sidebar entirely: a single centered column, with a compact theme toggle beside the page title
 - Light and dark themes with `localStorage` persistence across the homepage, CV, and blog pages
 - Coordinated blue colors, readable news date labels, subtle shadows, and theme-aware red highlights
 - A vector XMU emblem watermark in the profile area's upper-right corner, at **10% opacity** in both themes
@@ -129,7 +130,7 @@ Use `index.html` as the source for current homepage wording. Pull the latest `ma
 
 ### Blog Page
 
-`blog.html` is a standalone list page opened from the sidebar entry **Blog posts**; nothing about the blog appears on the homepage. It shares `css/style.css` and adds a small `<style>` block for the post list.
+`blog.html` is a standalone list page opened from the sidebar entry **Blog posts**; nothing about the blog appears on the homepage. The page itself has no sidebar navigation: it is a single centered column, and the only global control is a compact theme toggle beside the title. It shares `css/style.css` and adds a small `<style>` block for the column width, top bar, and post list.
 
 To publish a post, replace the `.post-empty` placeholder with an `<li class="post-item">` inside `.post-list`:
 
