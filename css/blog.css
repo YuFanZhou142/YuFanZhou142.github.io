@@ -102,15 +102,16 @@
 
 .archive-meta {
   margin-top: 5px;
-  color: var(--text-secondary);
+  color: var(--text-color);
   font-size: 0.95rem;
   font-style: italic;
+  font-weight: 500;
   line-height: 1.4;
 }
 
 .archive-excerpt {
   margin: 8px 0 0;
-  color: var(--text-secondary);
+  color: var(--text-color);
   font-size: 0.97rem;
   line-height: 1.6;
 }
@@ -127,9 +128,10 @@
   margin: 0 0 26px;
   padding-bottom: 16px;
   border-bottom: 1px solid var(--border-light);
-  color: var(--text-secondary);
+  color: var(--text-color);
   font-size: 1rem;
   font-style: italic;
+  font-weight: 500;
 }
 
 .article-body p {
