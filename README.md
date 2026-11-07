@@ -13,12 +13,12 @@ The site is a static homepage with separate PDF CV and blog pages. It runs direc
 The homepage includes:
 
 - Profile photo, contact details, and academic/social links (GitHub, X, ORCID, Google Scholar, LinkedIn)
-- About Me, research interests, and availability for industrial research/foundation model internships and research collaborations
+- About Me, research interests, a planned PhD at HKUST(GZ) from Fall 2027, and availability for industrial research/foundation model internships and research collaborations
 - A handwritten motto between the About Me notice and News, set in Caveat with a theme-blue left rule
 - News with filtering by content or displayed date
-- Publications grouped into First Author, Others, and Patent; the patent entry lists all inventors, its Chinese title, the English patent type, Patent No. ZL 2026 1 0206118.2, and the certificate PDF
+- Publications grouped into First-Author, Co-Author, and Patent; the patent entry lists all inventors, its Chinese title, the English patent type, Patent No. ZL 2026 1 0206118.2, and the certificate PDF
 - Paper entries with a venue badge, figure, authors, summary, and paper/code/video links
-- The GS³-ICL Video link opens the ACM ICMR 2026 presentation from the beginning
+- The GS³-ICL Video link opens the presentation recording on YouTube (no start-time parameter)
 - Educations and Research Intern
 - Competitions & Others with supporting certificate PDFs
 - Achievements, including the highlighted National Scholarship award proportion
@@ -61,6 +61,9 @@ Blog posts are not listed on the homepage; they live on the standalone `blog.htm
 ├── posts/
 │   └── starting-a-research-notebook.html  # First post; doubles as the article template
 ├── favicon.svg                 # Site icon
+├── robots.txt                  # Crawler rules and sitemap reference
+├── sitemap.xml                 # URLs for the homepage, CV, blog, and post
+├── google9add65054c8b58ca.html # Google site verification
 ├── README.md                   # Project documentation
 ├── AGENTS.md                   # Repository contribution guidelines
 ├── resume.md                   # Separately maintained text resume
