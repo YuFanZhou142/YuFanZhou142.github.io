@@ -31,7 +31,7 @@ Blog posts are not listed on the homepage; they live on the standalone `blog.htm
 
 - Sticky sidebar navigation on desktop; links wrap into a horizontal navigation area on smaller screens
 - The sidebar starts at About Me with no separate Home entry; the profile block at the top of the page serves as the home view, and `#top` remains available as an anchor
-- The sidebar panel carries no "Navigation" heading; its link list ends with Blog posts, which opens the standalone `blog.html` page rather than jumping to a homepage section
+- The sidebar panel carries no "Navigation" heading; its link list ends with Blogs, which opens the standalone `blog.html` page rather than jumping to a homepage section
 - The blog page drops the sidebar entirely: a single centered column, a compact theme toggle beside the page title, and posts grouped under year labels
 - Light and dark themes with `localStorage` persistence across the homepage, CV, and blog pages
 - Coordinated blue colors, readable news date labels, subtle shadows, and theme-aware red highlights
@@ -138,7 +138,9 @@ Use `index.html` as the source for current homepage wording. Pull the latest `ma
 
 ### Blog Page
 
-`blog.html` is a year archive opened from the sidebar entry **Blog posts**; nothing about the blog appears on the homepage. The page has no sidebar: it is a single centered column, with a compact theme toggle beside the title. Styles live in `css/blog.css`, shared with the article pages.
+`blog.html` is a year archive opened from the sidebar entry **Blogs**; nothing about the blog appears on the homepage. The page has no sidebar: it is a single centered column, with a compact theme toggle beside the **Blogs** heading. Styles live in `css/blog.css`, shared with the article pages.
+
+The `.blog-intro` paragraph is a personal welcome note rather than a topic summary: it describes collecting oddities and observations, and invites readers to email `vann.yufanzhou@gmail.com` about inaccuracies or questions. The sidebar entry, page heading, document title, and Open Graph / Twitter titles all read **Blogs**.
 
 Posts sit under a year label, newest first within each year. Every entry carries the title, a `date · N min read` line, and a one-sentence excerpt:
 
