@@ -346,7 +346,6 @@ $$
       for (var i = 0; i < options.length; i++) {
         options[i].setAttribute('aria-current', options[i].getAttribute('data-lang') === lang ? 'true' : 'false');
       }
-      try { localStorage.setItem('article-lang', lang); } catch (e) {}
     }
 
     function closeMenu() {
@@ -372,9 +371,9 @@ $$
       if (!menu.hidden && !(e.target.closest && e.target.closest('.lang-switch'))) closeMenu();
     });
 
-    var saved = 'en';
-    try { saved = localStorage.getItem('article-lang') || 'en'; } catch (e) {}
-    apply(saved === 'zh' ? 'zh' : 'en');
+    // Always open in English; the switch only affects the current visit.
+    try { localStorage.removeItem('article-lang'); } catch (e) {}
+    apply('en');
   })();
 </script>
 </body>
