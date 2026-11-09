@@ -164,6 +164,10 @@
 }
 
 .blog-footer {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
   margin-top: 30px;
   padding-top: 14px;
   border-top: 1px solid var(--border-light);
@@ -172,7 +176,7 @@
 }
 
 .article-date {
-  margin: 14px 0 0;
+  margin: 0;
   text-align: right;
   color: var(--text-muted);
   font-size: 0.9rem;
