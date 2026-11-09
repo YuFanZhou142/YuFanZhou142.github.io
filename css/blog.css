@@ -158,11 +158,6 @@
   font-size: 0.86em;
 }
 
-/* Display math stays scrollable on narrow screens. */
-.article-body .math-block {
-  overflow-x: auto;
-}
-
 .blog-footer {
   display: flex;
   align-items: baseline;
