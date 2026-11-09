@@ -158,55 +158,12 @@
   font-size: 0.86em;
 }
 
-/* ── Long-form article: quotes, rules, math, references ── */
-.article-body blockquote {
-  margin: 0 0 18px;
-  padding: 12px 18px;
-  border-left: 3px solid var(--link-color);
-  background: var(--news-date-bg);
-  border-radius: 0 8px 8px 0;
-  color: var(--text-secondary);
-}
-
-.article-body blockquote p:last-child {
-  margin-bottom: 0;
-}
-
-.article-body hr {
-  margin: 30px 0;
-  border: none;
-  border-top: 1px solid var(--border-light);
-}
-
+/* Display math stays scrollable on narrow screens. */
 .article-body .math-block {
-  margin: 0 0 20px;
   overflow-x: auto;
-  overflow-y: hidden;
-  color: var(--text-color);
-  font-size: 0.98em;
-}
-
-.article-body .math-block mjx-container[display="true"] {
-  margin: 0.6em 0 !important;
-}
-
-.article-body ol.references {
-  padding-left: 24px;
-  font-size: 0.92rem;
-  line-height: 1.55;
-  color: var(--text-secondary);
-}
-
-.article-body ol.references li {
-  margin-bottom: 12px;
 }
 
 .blog-footer {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 8px 16px;
   margin-top: 30px;
   padding-top: 14px;
   border-top: 1px solid var(--border-light);
@@ -215,13 +172,10 @@
 }
 
 .article-date {
-  margin-left: auto;
+  margin: 14px 0 0;
   text-align: right;
   color: var(--text-muted);
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 0.8rem;
-  letter-spacing: 0.02em;
-  white-space: nowrap;
+  font-size: 0.9rem;
 }
 
 @media print, screen and (max-width: 640px) {
@@ -246,9 +200,5 @@
 
   .archive-year {
     margin-top: 26px;
-  }
-
-  .article-date {
-    width: 100%;
   }
 }
