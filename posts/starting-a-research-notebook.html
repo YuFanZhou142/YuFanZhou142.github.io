@@ -21,6 +21,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/blog.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        tags: 'ams',
+        packages: {'[+]': ['ams']}
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    };
+  </script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-chtml.js"></script>
 </head>
 <body>
   <div class="page blog-page">
@@ -38,36 +52,85 @@
         <p class="article-meta">Nov. 9, 2026 · 10 min read</p>
 
         <div class="article-body">
-          <p>
-            Tarot has no causal power over the events a reading is taken to describe. Turning over a card
-            does not change a job offer, a relationship, or a deadline. And yet people consistently report
-            that a reading carries information about their situation. This note asks where that information
-            could come from when there is no causal channel to carry it.
-          </p>
-          <p>
-            The working hypothesis is synchronicity: a meaningful coincidence is treated as a structural
-            feature of how an observer samples a situation, not as an anomaly to be explained away. The
-            derivation treats a reading as a measurement — a mapping from a spread of cards to a set of
-            statements — and asks which quantities decide whether those statements carry information about
-            the question being asked.
-          </p>
+          <blockquote>
+            <p><strong>“Synchronicity is a ‘psychically conditioned relativity of time and space’” -- Jung</strong></p>
+          </blockquote>
 
-          <h2>What the derivation has to pin down</h2>
-          <p>
-            Three contributions are usually collapsed together: the base rate of the event being asked
-            about, the prior the querent brings to the reading, and the interpretive freedom of the reader.
-            The write-up defines the sample space of a spread, fixes what counts as a hit, and writes each
-            contribution down explicitly before asking whether any predictive content is left over.
-          </p>
-          <p>
-            This is a working note, not a finished proof: the assumptions and the derivation are being
-            written up, and no result is claimed yet. If you spot an error in the framing or want the
-            argument pushed in a particular direction, write to
-            <a href="mailto:vann.yufanzhou@gmail.com">vann.yufanzhou@gmail.com</a>.
-          </p>
-          <p>
-            Entries are listed newest first on the <a href="../blog.html">Blogs</a> page.
-          </p>
+          <p>Popular views on divination mostly fall into two categories:</p>
+
+          <ul>
+            <li><strong>The superstitious view</strong> holds that the cards possess some mystical power—for example, drawing <em>The Tower</em> causes or dictates bad luck tomorrow ($\text{Card } S_t \longrightarrow \text{Future } Y_{t+h}$); this is just like a black-box system such as an LLM: never mind what the internal mechanism actually looks like, as long as it works lol. Unfortunately, this perspective is overly crude and loses the beauty of rationality, reducing Tarot readings to mere oracles;</li>
+            <li><strong>The materialist view</strong> holds that the cards are nothing more than a stack of printed paper, and shuffling is purely random mixing; since paper cards cannot physically drive reality, their mutual information with the future must be zero ($I(S_t; Y_{t+h}) = 0$); rational as it may be, it fails to explain the astonishingly low-probability accuracy of Tarot.</li>
+          </ul>
+
+          <p>I am more inclined to view Tarot as a mercury barometer on the wall: a glance at the barometer's reading allows one to predict tomorrow's weather. The barometer has no decisive causal effect on the weather; it is merely a low-dimensional projection of high-dimensional weather information onto a barometric value. This coincides with Jung's hypothesis of synchronicity. There must be some intrinsic connection in Tarot that we do not yet fully recognize, involving a mapping between high and low dimensions.</p>
+
+          <p>We can formulate this mathematically as follows: although there is no direct causal arrow between the barometer reading $S_t$ and tomorrow's rainstorm $Y_{t+h}$, they share a Common Cause—namely, the atmospheric high- and low-pressure field $Z_t$.</p>
+
+          <p>From 1932 to 1952, Jung and Pauli collaborated and co-authored <em>The Interpretation of Nature and the Psyche</em> (1952). They proposed the famous principle of <strong>Synchronicity (also known as the Acausal Connecting Principle)</strong>:</p>
+
+          <blockquote>
+            <p>In the underlying latent manifold—which they termed the <strong>Unus Mundus (One World / the coupled field of the unconscious and reality)</strong> $Z_t$—the present psychological symbolic state and the present external trend of reality are two distinct projections of the same high-dimensional latent state $Z_t$.</p>
+          </blockquote>
+
+          <p>We can form a rough intuitive understanding of $Z_t$ as: <strong>the human subconscious state vector</strong>. In a relationship or a career endeavor, the other party's micro-expressions, vocal hesitations, and one's own deep-seated resistance or conviction have already been captured by the human brain's subcortical networks (the amygdala and basal ganglia) and encoded into the latent state $Z_t$—it is simply that human conscious awareness (the language areas) cannot fully process and articulate such high-dimensional information. When you shuffle, cut, select the cards, and interpret them with your present intuition, $Z_t$ on the one hand modulates your card drawing and symbolic projection $S_t$ (either via subtle stopping-time bias during physical shuffling and cutting, or via intuitive semantic projection onto the drawn symbols even when the physical draw is purely uniform), and on the other hand drives the future outcome $Y_{t+h}$ through your personality inertia and micro-behaviors.</p>
+
+          <p>Mathematically, they share the exact same <strong>Directed Acyclic Graph</strong>:</p>
+
+          <div class="math-block">
+$$
+S_t \longleftarrow Z_t \longrightarrow Z_{t+h} \longrightarrow Y_{t+h} \qquad (\text{given question } Q=q)
+\tag{1}
+$$
+          </div>
+
+          <p>In this graphical model—where $Z_t$ first evolves into the future latent state $Z_{t+h}$ (leaving room for human agency) before manifesting as $Y_{t+h}$—the core mathematical property is called <strong>d-separation</strong>: once the present underlying potential field $Z_t$ is given (marginalizing over the intermediate transition $Z_t \to Z_{t+h}$), the card $S_t$ and the future event $Y_{t+h}$ are completely independent:</p>
+
+          <div class="math-block">
+$$
+\Pr(S_t = s,\, Y_{t+h} = y \mid Z_t = z, q) = \underbrace{\Pr(S_t = s \mid Z_t = z, q)}_{\text{Symbolic resonance likelihood }\ell_s(z)} \cdot \underbrace{\Pr(Y_{t+h} = y \mid Z_t = z, q)}_{\text{Future evolution propensity }g_y(z)}.
+\tag{2}
+$$
+          </div>
+
+          <hr>
+
+          <h2>Theorem 1: Covariance Transfer Theorem</h2>
+
+          <p>Since we posit that there is no causal power between the cards and the future, how does observing the card $S_t = s$ shift our probability assessment of the future outcome $Y_{t+h} = y$? Derivation:</p>
+
+          <div class="math-block">
+$$
+\begin{aligned}
+\Pr(Y_{t+h}=y \mid S_t=s, q) - \Pr(Y_{t+h}=y \mid q)
+&amp;= \frac{\Pr(S_t=s, Y_{t+h}=y \mid q)}{\Pr(S_t=s \mid q)} - \mathbb{E}[g_y(Z_t)] \\
+&amp;= \frac{\mathbb{E}\bigl[\ell_s(Z_t)\, g_y(Z_t)\bigr] - \mathbb{E}[\ell_s(Z_t)]\,\mathbb{E}[g_y(Z_t)]}{\mathbb{E}[\ell_s(Z_t)]} \\
+&amp;= \boxed{\frac{\operatorname{Cov}_{Z_t \mid q}\!\bigl(\ell_s(Z_t),\, g_y(Z_t)\bigr)}{\Pr(S_t=s \mid q)}}.
+\end{aligned}
+\tag{3}
+$$
+          </div>
+
+          <p><strong>From Equation (3), we can see that</strong>:</p>
+
+          <ul>
+            <li>What Tarot predicts is not a rigid fatalistic Point Event, but rather the Bayesian posterior probability shift $\Delta \Pr(Y_{t+h}=y \mid s, q)$ across future branches given the present card spread.</li>
+            <li>Whether this predictive shift can be greater than zero does not require the cards to exert any physical force or causal power on the future. As long as the covariance $\operatorname{Cov}(\ell_s, g_y) \neq 0$ between the card's symbolic response function $\ell_s(Z_t)$ and the future reality evolution function $g_y(Z_t)$ on the latent manifold $Z_t$, the present card spread can predict the probability distribution of the future.</li>
+            <li>Even if each card appears with a strictly uniform marginal probability $\Pr(S_t=s \mid q) = \mathbb{E}[\ell_s(Z_t)] = 1/78$ across repeated trials, this does not contradict its predictive power: first-order marginal uniformity only means $\ell_s(Z_t)$ averages to $1/78$ over the prior of $Z_t$, whereas predictive information resides entirely in the second-order cross-covariance $\operatorname{Cov}(\ell_s, g_y) \neq 0$.</li>
+          </ul>
+
+          <hr>
+
+          <h2>References</h2>
+
+          <ol class="references">
+            <li><em>Jung, C. G., &amp; Pauli, W. (1952/1955). Naturerklärung und Psyche</em>. Studien aus dem C. G. Jung-Institut Zürich, Vol. IV. Zürich: Rascher Verlag, 1952. (English trans.: <em>The Interpretation of Nature and the Psyche</em>, Bollingen Series LI, New York: Pantheon Books, 1955; contains C. G. Jung, <em>Synchronicity: An Acausal Connecting Principle</em>, also in <em>Collected Works</em>, Vol. 8, ¶816–968, with the opening quote at ¶840.)</li>
+            <li><em>Jung, C. G. (1955–1956). Mysterium Coniunctionis: An Inquiry into the Separation and Synthesis of Psychic Opposites in Alchemy</em> (<em>Collected Works</em>, Vol. 14, trans. R. F. C. Hull). Princeton, NJ: Princeton University Press, 1963, ¶654–775. <em>(Formalization of the Unus Mundus as the unified psychophysical substrate underlying synchronicity; see also C. A. Meier, Ed., Atom and Archetype: The Pauli/Jung Letters, 1932–1958, Princeton University Press, 2001.)</em></li>
+            <li><em>Reichenbach, H. (1956). The Direction of Time</em>. Berkeley &amp; Los Angeles: University of California Press, Section 19 ("The Principle of the Common Cause"), pp. 157–167. <em>(Formulation of the Common Cause Principle for correlated events without direct causal arrows.)</em></li>
+            <li><em>Pearl, J. (2009). Causality: Models, Reasoning, and Inference</em> (2nd ed.). Cambridge: Cambridge University Press, Section 1.2.3 ("Conditional Independence and Graphoids / d-Separation"), pp. 16–18. <em>(Directed Acyclic Graphs and d-separation.)</em></li>
+            <li><em>Lieberman, M. D. (2000). Intuition: A social cognitive neuroscience approach. Psychological Bulletin</em>, 126(1), 109–137. <em>(Establishes subcortical networks—specifically the basal ganglia and amygdala—as the neural substrates of implicit pattern learning and nonverbal intuition.)</em></li>
+            <li><em>Bechara, A., Damasio, H., Tranel, D., &amp; Damasio, A. R. (1997). Deciding advantageously before knowing the advantageous strategy. Science</em>, 275(5304), 1293–1295. <em>(Empirical demonstration via the Iowa card-drawing task that non-conscious somatic and subcortical signals guide choices prior to explicit verbal awareness.)</em></li>
+          </ol>
         </div>
       </article>
 
