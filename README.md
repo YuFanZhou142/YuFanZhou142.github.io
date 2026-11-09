@@ -162,6 +162,7 @@ The current 2026 entry points to `posts/starting-a-research-notebook.html`:
 - Title: **Why Can Tarot Generate Predictive Information Without Causal Power?**
 - Meta: `Nov. 9, 2026 · 10 min read`
 - Excerpt: "Mathematical Derivation of Synchronicity as the Underlying Principle of Tarot."
+- Article page: same title, meta, and summary; its body is a working outline of the derivation. The original file name is kept so the published URL and the article template stay valid.
 
 To publish a post, copy `posts/starting-a-research-notebook.html` and change its title, `description`, canonical URL, `.article-meta` line, and body; then add an `.archive-item` under the matching year in `blog.html`, creating a new `.archive-year` block when the year changes. Article pages reuse `.article-title`, `.article-meta`, and `.article-body` from `css/blog.css`, and link back to the archive through `.article-back`.
 
