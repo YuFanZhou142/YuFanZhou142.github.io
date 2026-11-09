@@ -82,6 +82,7 @@ Blog posts are not listed on the homepage; they live on the standalone `blog.htm
 │   ├── vann.jpg                # Alternate photo, currently unused
 │   ├── avatar-placeholder.svg  # Profile image fallback
 │   ├── xmu-emblem.svg          # Vector XMU emblem
+│   ├── tarot-picture.webp      # Figure 1 image for the Tarot blog post
 │   ├── cv/
 │   │   └── Yufan_Zhou-Xiamen_University-2023.pdf  # Previous version; not used by cv.html
 │   └── files/
@@ -164,9 +165,9 @@ The current 2026 entry points to `posts/vann-tarot1.html`:
 - Title: **Why Can Tarot Generate Predictive Information Without Causal Power?**
 - Meta: `Nov. 9, 2026 · 10 min read`
 - Excerpt: "Mathematical Derivation of Synchronicity as the Underlying Principle of Tarot."
-- Article page: same title and summary; the byline under the title reads **Vann**, and `Nov. 9, 2026` sits at the far right of the footer line, opposite the back link. The body is the full essay (theorem, three numbered equations, and six references), with MathJax 3 loaded from cdnjs for LaTeX rendering. The published URL is `https://yufanzhou142.github.io/posts/vann-tarot1.html`.
+- Article page: same title and summary; the byline under the title reads **Vann**, and `Nov. 9, 2026` sits at the far right of the footer line, opposite the back link. The body is the full essay (Figure 1 tarot image, theorem, three numbered equations, six references, and a BibTeX citation block), with MathJax 3 loaded from cdnjs for LaTeX rendering. The published URL is `https://yufanzhou142.github.io/posts/vann-tarot1.html`.
 
-The Tarot article has a language switch (globe icon) to the left of the dark-mode toggle. Its menu offers **中文** and **English**; the English text stays in the page as the source of truth and is never rewritten. The Chinese version is stored in an inert `<template id="article-zh">` and swapped into `.article-body` at runtime, along with the page title, both back links, and `html lang`. LaTeX equations, the six reference entries, the BibTeX block, the `Vann` byline, and the footer date are kept as in the English original; MathJax re-typesets the article body after each switch. Every page load starts in English; the switch only affects the current view and is not persisted (unlike the theme setting, which still uses `localStorage`).
+The Tarot article has a language switch (globe icon) to the left of the dark-mode toggle. Its menu offers **中文** and **English**; the English text stays in the page as the source of truth and is never rewritten. The Chinese version (titled **为什么塔罗不具因果力，却能产生预测信息？**, written in natural Chinese prose while keeping the exact same argument structure) is stored in an inert `<template id="article-zh">` and swapped into `.article-body` at runtime, along with the page title, both back links, and `html lang`. LaTeX equations, the six reference entries, the BibTeX block, the `Vann` byline, and the footer date are kept as in the English original; MathJax re-typesets the article body after each switch. Every page load starts in English; the switch only affects the current view and is not persisted (unlike the theme setting, which still uses `localStorage`).
 
 To publish a post, copy `posts/vann-tarot1.html` and change its title, `description`, canonical URL, `.article-meta` line, and body; then add an `.archive-item` under the matching year in `blog.html`, creating a new `.archive-year` block when the year changes. Article pages reuse `.article-title`, `.article-meta`, and `.article-body` from `css/blog.css`, and link back to the archive through `.article-back`.
 
