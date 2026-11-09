@@ -215,6 +215,59 @@
   font-size: 0.9rem;
 }
 
+/* Language switch beside the article theme toggle. */
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+}
+
+.lang-switch {
+  position: relative;
+  flex: none;
+}
+
+.lang-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 96px;
+  padding: 4px;
+  background: var(--bg-content);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  z-index: 5;
+}
+
+.lang-menu[hidden] {
+  display: none;
+}
+
+.lang-option {
+  display: block;
+  width: 100%;
+  padding: 5px 9px;
+  background: none;
+  border: 0;
+  border-radius: 4px;
+  color: var(--sidenav-text);
+  font-family: "Crimson Pro", Georgia, serif;
+  font-size: 0.9rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.lang-option:hover,
+.lang-option:focus-visible {
+  background: rgba(128, 128, 128, 0.08);
+}
+
+.lang-option[aria-current="true"] {
+  color: var(--link-color);
+  font-weight: 600;
+}
+
 @media print, screen and (max-width: 640px) {
   .blog-page {
     width: calc(100% - 24px);

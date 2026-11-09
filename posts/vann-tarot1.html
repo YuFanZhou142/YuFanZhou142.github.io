@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/blog.css?v=7">
+  <link rel="stylesheet" href="../css/blog.css?v=8">
   <script>
     window.MathJax = {
       tex: {
@@ -41,17 +41,29 @@
     <div class="content">
       <div class="blog-topbar">
         <a class="article-back" href="../blog.html">&larr; Blogs</a>
-        <button type="button" class="theme-toggle-btn blog-theme" id="theme-toggle" aria-label="Toggle dark mode">
-          <span class="icon" id="theme-icon">🌙</span>
-          <span id="theme-label">Dark</span>
-        </button>
+        <div class="topbar-actions">
+          <div class="lang-switch">
+            <button type="button" class="theme-toggle-btn blog-theme lang-btn" id="lang-toggle" aria-label="Switch language" aria-haspopup="true" aria-expanded="false">
+              <span class="icon" aria-hidden="true">🌐</span>
+              <span id="lang-label">EN</span>
+            </button>
+            <div class="lang-menu" id="lang-menu" hidden>
+              <button type="button" class="lang-option" data-lang="zh">中文</button>
+              <button type="button" class="lang-option" data-lang="en" aria-current="true">English</button>
+            </div>
+          </div>
+          <button type="button" class="theme-toggle-btn blog-theme" id="theme-toggle" aria-label="Toggle dark mode">
+            <span class="icon" id="theme-icon">🌙</span>
+            <span id="theme-label">Dark</span>
+          </button>
+        </div>
       </div>
 
       <article>
         <h1 class="article-title">Why Can Tarot Generate Predictive Information Without Causal Power?</h1>
         <p class="article-meta">Vann</p>
 
-        <div class="article-body">
+        <div class="article-body" id="article-body">
           <p><strong>“Synchronicity is a ‘psychically conditioned relativity of time and space’” -- Jung</strong></p>
 
           <p>Popular views on divination mostly fall into two categories:</p>
@@ -148,6 +160,102 @@ $$
         </div>
       </article>
 
+      <template id="article-zh">
+        <p><strong>“共时性是一种‘由心理所制约的时间与空间的相对性’” —— 荣格</strong></p>
+
+        <p>关于占卜的流行看法大致分为两类：</p>
+
+        <ul>
+          <li><strong>迷信视角</strong>认为牌本身具有某种神秘力量——例如抽到<em>高塔（The Tower）</em>就会导致或规定明天走霉运（$\text{Card } S_t \longrightarrow \text{Future } Y_{t+h}$）；这和 LLM 这类黑箱系统一样：不用管内部机制到底长什么样，只要能用就行 lol。可惜这种看法过于粗糙，丢掉了理性之美，把塔罗解读降格成了单纯的神谕；</li>
+          <li><strong>唯物视角</strong>认为牌不过是一叠印刷纸，洗牌只是纯粹的随机混合；既然纸牌无法在物理上驱动现实，它们与未来之间的互信息就必然为零（$I(S_t; Y_{t+h}) = 0$）；这种看法虽然理性，却解释不了塔罗那低概率到令人惊讶的准确率。</li>
+        </ul>
+
+        <figure class="article-figure">
+          <img src="../assets/tarot-picture.webp" alt="塔罗牌">
+          <figcaption>图 1：塔罗牌</figcaption>
+        </figure>
+
+        <p>我更倾向于把塔罗看作墙上挂着的水银气压计：看一眼气压计的读数，就能预测明天的天气。气压计对天气并没有决定性的因果作用；它只是把高维的天气信息低维投影成一个气压数值。这与荣格的共时性假说相吻合。塔罗之中一定存在某种我们尚未完全认识到的内在联系，涉及高维与低维之间的映射。</p>
+
+        <p>我们可以把它写成数学形式：虽然气压计读数 $S_t$ 与明天的暴雨 $Y_{t+h}$ 之间没有直接的因果箭头，但二者共享一个共同原因——也就是大气的高低压场 $Z_t$。</p>
+
+        <p>1932 年至 1952 年间，荣格与泡利合作并共同撰写了 <em>The Interpretation of Nature and the Psyche</em>（1952）。他们提出了著名的<strong>共时性原理（Synchronicity，也称非因果联系原理）</strong>：</p>
+
+        <p>在底层的潜在流形中——他们称之为<strong>「合一世界」（Unus Mundus，即「一世界」／潜意识与现实相耦合的场）</strong> $Z_t$——当下的心理符号状态与当下现实的外在走向，是同一个高维潜在状态 $Z_t$ 的两种不同投影。</p>
+
+        <p>可以把 $Z_t$ 粗略直观地理解为：<strong>人的潜意识状态向量</strong>。在一段关系或一项事业里，对方的微表情、语气中的迟疑，以及自己心底的抗拒或笃定，早已被人脑的皮层下网络（杏仁核与基底神经节）捕捉，并编码进潜在状态 $Z_t$——只是人的意识（语言区）无法完整处理并说清这类高维信息。当你洗牌、切牌、抽牌，并用当下的直觉去解读时，$Z_t$ 一方面调制你的抽牌与符号投影 $S_t$（要么通过物理洗牌、切牌时细微的停手时间偏差，要么在物理抽牌完全均匀的情况下，通过你对所抽符号的直觉语义投影），另一方面又经由你的人格惯性与微行为驱动未来的结果 $Y_{t+h}$。</p>
+
+        <p>在数学上，二者共享完全相同的<strong>有向无环图</strong>：</p>
+
+        <div class="math-block">
+$$
+S_t \longleftarrow Z_t \longrightarrow Z_{t+h} \longrightarrow Y_{t+h} \qquad (\text{given question } Q=q)
+\tag{1}
+$$
+        </div>
+
+        <p>在这个图模型里——$Z_t$ 先演化为未来的潜在状态 $Z_{t+h}$（给人的主观能动性留出余地），再显现为 $Y_{t+h}$——核心的数学性质叫作<strong>d-分离</strong>：一旦给定当下的底层势场 $Z_t$（并对中间转移 $Z_t \to Z_{t+h}$ 作边缘化），牌 $S_t$ 与未来事件 $Y_{t+h}$ 就完全独立：</p>
+
+        <div class="math-block">
+$$
+\Pr(S_t = s,\, Y_{t+h} = y \mid Z_t = z, q) = \underbrace{\Pr(S_t = s \mid Z_t = z, q)}_{\text{Symbolic resonance likelihood }\ell_s(z)} \cdot \underbrace{\Pr(Y_{t+h} = y \mid Z_t = z, q)}_{\text{Future evolution propensity }g_y(z)}.
+\tag{2}
+$$
+        </div>
+
+        <hr>
+
+        <h2>定理 1：协方差传递定理</h2>
+
+        <p>既然我们设定牌与未来之间不存在因果作用力，那么观测到牌 $S_t = s$ 又怎么会改变我们对未来结果 $Y_{t+h} = y$ 的概率判断呢？推导如下：</p>
+
+        <div class="math-block">
+$$
+\begin{aligned}
+\Pr(Y_{t+h}=y \mid S_t=s, q) - \Pr(Y_{t+h}=y \mid q)
+&amp;= \frac{\Pr(S_t=s, Y_{t+h}=y \mid q)}{\Pr(S_t=s \mid q)} - \mathbb{E}[g_y(Z_t)] \\
+&amp;= \frac{\mathbb{E}\bigl[\ell_s(Z_t)\, g_y(Z_t)\bigr] - \mathbb{E}[\ell_s(Z_t)]\,\mathbb{E}[g_y(Z_t)]}{\mathbb{E}[\ell_s(Z_t)]} \\
+&amp;= \boxed{\frac{\operatorname{Cov}_{Z_t \mid q}\!\bigl(\ell_s(Z_t),\, g_y(Z_t)\bigr)}{\Pr(S_t=s \mid q)}}.
+\end{aligned}
+\tag{3}
+$$
+        </div>
+
+        <p><strong>由式 (3) 可以看出</strong>：</p>
+
+        <ul>
+          <li>塔罗预测的不是某个僵死的宿命式「点事件」，而是在当前牌阵之下，未来各分支上的贝叶斯后验概率偏移 $\Delta \Pr(Y_{t+h}=y \mid s, q)$。</li>
+          <li>这种预测偏移能否大于零，并不需要牌对未来施加任何物理力或因果作用力。只要牌的符号响应函数 $\ell_s(Z_t)$ 与未来现实演化函数 $g_y(Z_t)$ 在潜在流形 $Z_t$ 上的协方差 $\operatorname{Cov}(\ell_s, g_y) \neq 0$，当前的牌阵就能预测未来的概率分布。</li>
+          <li>即使在多次重复试验中，每张牌都以严格均匀的边缘概率 $\Pr(S_t=s \mid q) = \mathbb{E}[\ell_s(Z_t)] = 1/78$ 出现，也不与它的预测能力相矛盾：一阶边缘均匀只意味着 $\ell_s(Z_t)$ 在 $Z_t$ 的先验上平均为 $1/78$，而预测信息完全存在于二阶交叉协方差 $\operatorname{Cov}(\ell_s, g_y) \neq 0$ 之中。</li>
+        </ul>
+
+        <hr>
+
+        <h2>参考文献</h2>
+
+        <ol class="references">
+          <li><em>Jung, C. G., &amp; Pauli, W. (1952/1955). Naturerklärung und Psyche</em>. Studien aus dem C. G. Jung-Institut Zürich, Vol. IV. Zürich: Rascher Verlag, 1952. (English trans.: <em>The Interpretation of Nature and the Psyche</em>, Bollingen Series LI, New York: Pantheon Books, 1955; contains C. G. Jung, <em>Synchronicity: An Acausal Connecting Principle</em>, also in <em>Collected Works</em>, Vol. 8, ¶816–968, with the opening quote at ¶840.)</li>
+          <li><em>Jung, C. G. (1955–1956). Mysterium Coniunctionis: An Inquiry into the Separation and Synthesis of Psychic Opposites in Alchemy</em> (<em>Collected Works</em>, Vol. 14, trans. R. F. C. Hull). Princeton, NJ: Princeton University Press, 1963, ¶654–775. <em>(Formalization of the Unus Mundus as the unified psychophysical substrate underlying synchronicity; see also C. A. Meier, Ed., Atom and Archetype: The Pauli/Jung Letters, 1932–1958, Princeton University Press, 2001.)</em></li>
+          <li><em>Reichenbach, H. (1956). The Direction of Time</em>. Berkeley &amp; Los Angeles: University of California Press, Section 19 ("The Principle of the Common Cause"), pp. 157–167. <em>(Formulation of the Common Cause Principle for correlated events without direct causal arrows.)</em></li>
+          <li><em>Pearl, J. (2009). Causality: Models, Reasoning, and Inference</em> (2nd ed.). Cambridge: Cambridge University Press, Section 1.2.3 ("Conditional Independence and Graphoids / d-Separation"), pp. 16–18. <em>(Directed Acyclic Graphs and d-separation.)</em></li>
+          <li><em>Lieberman, M. D. (2000). Intuition: A social cognitive neuroscience approach. Psychological Bulletin</em>, 126(1), 109–137. <em>(Establishes subcortical networks—specifically the basal ganglia and amygdala—as the neural substrates of implicit pattern learning and nonverbal intuition.)</em></li>
+          <li><em>Bechara, A., Damasio, H., Tranel, D., &amp; Damasio, A. R. (1997). Deciding advantageously before knowing the advantageous strategy. Science</em>, 275(5304), 1293–1295. <em>(Empirical demonstration via the Iowa card-drawing task that non-conscious somatic and subcortical signals guide choices prior to explicit verbal awareness.)</em></li>
+        </ol>
+
+        <h2>引用</h2>
+
+        <p>如需引用本文，请使用下面的 BibTeX。</p>
+
+        <pre class="bibtex"><code>@misc{vann2026Tarot1,
+  title = {Why Can Tarot Generate Predictive Information Without Causal Power?},
+  author = {Zhou, Yufan},
+  year = {2026},
+  month = November,
+  howpublished = {\url{https://yufanzhou142.github.io/posts/vann-tarot1.html}},
+  note = {Blog post}
+}</code></pre>
+      </template>
+
       <p class="blog-footer">
         <a href="../blog.html">&larr; Back to Blogs</a>
         <span class="article-date">Nov. 9, 2026</span>
@@ -186,6 +294,87 @@ $$
       localStorage.setItem('theme', next ? 'dark' : 'light');
       apply(next);
     });
+  })();
+</script>
+<script>
+  (function() {
+    var body = document.getElementById('article-body');
+    var enHTML = body.innerHTML;
+    var zhHTML = document.getElementById('article-zh').innerHTML;
+    var titleEl = document.querySelector('.article-title');
+    var backEl = document.querySelector('.article-back');
+    var footerEl = document.querySelector('.blog-footer a');
+    var toggle = document.getElementById('lang-toggle');
+    var menu = document.getElementById('lang-menu');
+    var label = document.getElementById('lang-label');
+    var options = menu.querySelectorAll('.lang-option');
+
+    var en = {
+      pageTitle: document.title,
+      title: titleEl.textContent,
+      back: backEl.textContent,
+      footer: footerEl.textContent
+    };
+    var zh = {
+      pageTitle: '为什么塔罗牌能在没有因果作用力的情况下产生预测信息？ — Yufan Zhou',
+      title: '为什么塔罗牌能在没有因果作用力的情况下产生预测信息？',
+      back: '← 博客',
+      footer: '← 返回博客'
+    };
+    var current = 'en';
+
+    function retypeset() {
+      if (!window.MathJax || !MathJax.startup || !MathJax.startup.promise) return;
+      MathJax.startup.promise.then(function() {
+        if (MathJax.typesetPromise) MathJax.typesetPromise([body]);
+      });
+    }
+
+    function apply(lang) {
+      var isZh = lang === 'zh';
+      if (lang !== current) {
+        body.innerHTML = isZh ? zhHTML : enHTML;
+        current = lang;
+        retypeset();
+      }
+      document.documentElement.lang = isZh ? 'zh-CN' : 'en';
+      document.title = isZh ? zh.pageTitle : en.pageTitle;
+      titleEl.textContent = isZh ? zh.title : en.title;
+      backEl.textContent = isZh ? zh.back : en.back;
+      footerEl.textContent = isZh ? zh.footer : en.footer;
+      label.textContent = isZh ? '中' : 'EN';
+      for (var i = 0; i < options.length; i++) {
+        options[i].setAttribute('aria-current', options[i].getAttribute('data-lang') === lang ? 'true' : 'false');
+      }
+      try { localStorage.setItem('article-lang', lang); } catch (e) {}
+    }
+
+    function closeMenu() {
+      menu.hidden = true;
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+
+    toggle.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var opening = menu.hidden;
+      menu.hidden = !opening;
+      toggle.setAttribute('aria-expanded', opening ? 'true' : 'false');
+    });
+
+    for (var j = 0; j < options.length; j++) {
+      options[j].addEventListener('click', function() {
+        apply(this.getAttribute('data-lang'));
+        closeMenu();
+      });
+    }
+
+    document.addEventListener('click', function(e) {
+      if (!menu.hidden && !(e.target.closest && e.target.closest('.lang-switch'))) closeMenu();
+    });
+
+    var saved = 'en';
+    try { saved = localStorage.getItem('article-lang') || 'en'; } catch (e) {}
+    apply(saved === 'zh' ? 'zh' : 'en');
   })();
 </script>
 </body>
