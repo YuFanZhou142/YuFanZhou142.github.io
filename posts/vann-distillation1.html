@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How Do You Distill Closed-Source Models Like GPT and Claude? — Yufan Zhou</title>
+  <meta name="description" content="A practical guide to black-box distillation, from collecting verified teacher demonstrations to fine-tuning and testing a student model.">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="canonical" href="https://yufanzhou142.github.io/posts/vann-distillation1.html">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="How Do You Distill Closed-Source Models Like GPT and Claude?">
+  <meta property="og:description" content="A practical guide to black-box distillation, from collecting verified teacher demonstrations to fine-tuning and testing a student model.">
+  <meta property="og:url" content="https://yufanzhou142.github.io/posts/vann-distillation1.html">
+  <meta property="og:image" content="https://yufanzhou142.github.io/assets/vann1.jpg">
+  <meta property="og:site_name" content="Vann(Yufan) Zhou">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css?v=8">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        tags: 'ams',
+        packages: {'[+]': ['ams']}
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    };
+  </script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-chtml.js"></script>
+</head>
+<body>
+  <div class="page blog-page">
+    <div class="content">
+      <div class="blog-topbar">
+        <a class="article-back" href="../blog.html">&larr; Blogs</a>
+        <div class="topbar-actions">
+          <div class="lang-switch">
+            <button type="button" class="theme-toggle-btn blog-theme lang-btn" id="lang-toggle" aria-label="Switch language" aria-haspopup="true" aria-expanded="false">
+              <span class="icon" aria-hidden="true">🌐</span>
+              <span id="lang-label">EN</span>
+            </button>
+            <div class="lang-menu" id="lang-menu" hidden>
+              <button type="button" class="lang-option" data-lang="zh">中文</button>
+              <button type="button" class="lang-option" data-lang="en" aria-current="true">English</button>
+            </div>
+          </div>
+          <button type="button" class="theme-toggle-btn blog-theme" id="theme-toggle" aria-label="Toggle dark mode">
+            <span class="icon" id="theme-icon">🌙</span>
+            <span id="theme-label">Dark</span>
+          </button>
+        </div>
+      </div>
+
+      <article>
+        <h1 class="article-title">How Do You Distill Closed-Source Models Like GPT and Claude?</h1>
+        <p class="article-meta">Vann</p>
+
+        <div class="article-body" id="article-body">
+          <p>Suppose I want a small model to fix a particular kind of bug. I give a stronger model a batch of those bugs, record how it handles them, and keep the fixes that survive testing. Then I use those demonstrations to fine-tune the smaller model. GPT or Claude plays the teacher. All the training happens on the student.</p>
+
+          <p>That is <strong>black-box distillation</strong>. The teacher's weights stay on the provider's servers. The API gives me a demonstration in the form of an answer, a worked solution, or a sequence of tool calls that I can execute and check.</p>
+
+          <h2>Start with a bug you can reproduce</h2>
+
+          <p>Imagine that an empty shopping cart returns <code>null</code> as its total when the API contract says it should return <code>0</code>. A patch that replaces one with the other tells us what fixed this bug. A tool trace can also show how the model found the right place to make the change.</p>
+
+          <ol>
+            <li><strong>Set up the task.</strong> Save the bug report, the exact repository revision, and a reproducible test environment. Keep separate acceptance tests for the empty cart and for a normal cart with items.</li>
+            <li><strong>Let the teacher work.</strong> Give GPT or Claude tools to read files, edit code, and run commands in an isolated copy of the repository. Execute each tool call, send the real result back, and log the exchange. For hard tasks, try several solutions from the same initial state.</li>
+            <li><strong>Keep verified demonstrations.</strong> Run the acceptance and regression tests against the resulting patch. If you also keep a written explanation, check its key claims against the code and the execution log.</li>
+            <li><strong>Fine-tune and retest.</strong> Use the verified demonstrations to fine-tune an open-weight student. Then let it attempt bugs in repositories held out from training, with the same tools and a fixed budget.</li>
+          </ol>
+
+          <h2>What goes into one training example?</h2>
+
+          <p>Suppose the teacher runs <code>python -m pytest</code> and gets <code>No module named pytest</code>. It checks the project's setup instructions, switches to the project environment, and runs the test again. This time the test reports <code>expected 0, got None</code>. The teacher inspects the code that calculates the total, fixes the empty-cart case, and verifies that a cart with items still produces the right total.</p>
+
+          <p>The student gets two different lessons. Given a missing test runner, check the environment. Given a failed assertion about the cart total, investigate the code. Both appear before the final patch, and both are useful on future bugs. <strong>The tool result is context. The teacher's next action is the target.</strong></p>
+
+          <p>Format the transcript using the student's message and tool schema so it can learn the exact tool names and arguments. For supervised fine-tuning (SFT), write that transcript as $z_1,\ldots,z_T$ and let $A$ denote the token positions in the teacher's messages and tool calls that we want the student to imitate. We train with the usual next-token loss on those positions.</p>
+
+          \[
+            \mathcal L(\theta)=-\sum_{t\in A}\log p_\theta(z_t\mid z_{&lt;t}).
+          \]
+
+          <p>The earlier history includes the bug report and any tool results available at that point. The loss teaches the student to choose an action given that history. When the student is deployed, the test runner supplies the next observation.</p>
+
+          <h2>Where does the reasoning come from?</h2>
+
+          <p>The public GPT and Claude APIs keep raw reasoning on the provider's side. Supported models or settings can return a reasoning summary. You can also ask the teacher to write a worked solution for the reader. That explanation can help teach a technique, and a real tool trace adds evidence about which commands ran and what they returned. [1–3]</p>
+
+          <p>For a task with a single checkable answer, a short worked solution may be plenty. For a coding agent, the useful extra data often comes from decisions that change after an observation. Record the observation alongside the decision so the student can learn when to take a different action.</p>
+
+          <h2>What does this look like at scale?</h2>
+
+          <p><em>SWE-smith</em> is a concrete example. The authors collected <strong>5,016</strong> verified and filtered trajectories from Claude 3.7 Sonnet and used them to fine-tune Qwen2.5-Coder-Instruct-32B. The student resolved <strong>40.2%</strong> of SWE-bench Verified tasks on one attempt, a gain of 33.4 percentage points over its starting model. The teacher scored 58.2% in the same SWE-agent framework. To build that dataset, the team ran 17,906 attempts across 8,686 distinct training tasks. The final dataset size tells only part of the collection cost. [4]</p>
+
+          <p>To find out whether the trajectory is worth collecting, train two students from the same checkpoint. Give both the same bugs and verified fixes. Give one student the patches alone and the other the corresponding tool traces. Keep the training budgets comparable and test both on held-out repositories with the same tools and inference budget. Compare pass rates, recovery after an error, and model spend per verified fix. That tells you whether the extra trace data improved the capability you actually care about.</p>
+
+          <p>For a project using a commercial API as the teacher, check the agreement covering that use. OpenAI and Anthropic's published business terms both restrict use for training competing models, with exceptions or approvals defined in the respective terms. [5–6]</p>
+
+          <hr>
+
+          <h2>References</h2>
+
+          <ol class="references">
+            <li>OpenAI. <a href="https://developers.openai.com/api/docs/guides/reasoning#reasoning-summaries">Reasoning models and reasoning summaries</a>.</li>
+            <li>Anthropic. <a href="https://platform.claude.com/docs/en/build-with-claude/thinking#summarized-thinking">Summarized thinking</a>.</li>
+            <li>Hsieh, C.-Y., et al. (2023). <a href="https://aclanthology.org/2023.findings-acl.507/"><em>Distilling Step-by-Step! Outperforming Larger Language Models with Less Training Data and Smaller Model Sizes</em></a>. Findings of ACL 2023.</li>
+            <li>Yang, J., et al. (2025). <a href="https://arxiv.org/html/2504.21798v2#S4"><em>SWE-smith: Scaling Data for Software Engineering Agents</em></a>, Section 4.</li>
+            <li>OpenAI. <a href="https://openai.com/policies/services-agreement/">Services Agreement</a>, Section 3.3.</li>
+            <li>Anthropic. <a href="https://www.anthropic.com/legal/commercial-terms">Commercial Terms of Service</a>, Section D.4.</li>
+          </ol>
+
+          <h2>Citation</h2>
+
+          <p>If you need to cite this article, please use the BibTeX below.</p>
+
+          <pre class="bibtex"><code>@misc{vann2026Distillation1,
+  title = {How Do You Distill Closed-Source Models Like GPT and Claude?},
+  author = {Zhou, Yufan},
+  year = {2026},
+  month = November,
+  howpublished = {\url{https://yufanzhou142.github.io/posts/vann-distillation1.html}},
+  note = {Blog post}
+}</code></pre>
+        </div>
+      </article>
+
+      <template id="article-zh">
+        <p>假设我想让一个小模型学会修某一类 bug。我可以先把这批 bug 交给 GPT 或 Claude，记录它是怎么做的，用测试挑出成功的示范，再拿这些示范微调小模型。<strong>闭源模型负责做题，训练发生在学生模型上。</strong></p>
+
+        <p>这就是<strong>黑盒蒸馏</strong>。教师的权重留在服务商那边。我们从接口拿到的是它对具体任务的示范，可以是一份答案、一段解法，也可以是一串能在自己环境里执行并核验的工具调用。</p>
+
+        <h2>从一个能复现的 bug 开始</h2>
+
+        <p>比如，购物车为空时，接口把总金额返回成 <code>null</code>，按约定应该返回 <code>0</code>。最后的补丁能告诉学生哪里改对了。一条工具轨迹还能教它怎么找到那个位置。</p>
+
+        <ol>
+          <li><strong>把题目准备好。</strong> 固定 bug 描述、仓库版本和测试环境，另留验收测试。一条检查空购物车返回 <code>0</code>，另一条确认有商品的购物车仍能正确计价。</li>
+          <li><strong>让教师做一遍。</strong> 在隔离的仓库副本里给 GPT 或 Claude 提供读文件、改代码和运行命令的工具。每次都实际执行，把真实结果发回给教师，并保存这轮交互。难题可以从同一初始状态多试几次。</li>
+          <li><strong>筛出可用的示范。</strong> 用验收测试和回归测试检查最终补丁。如果还要保留文字解法，就对照代码和执行日志检查其中的关键判断。</li>
+          <li><strong>微调学生，再出新题。</strong> 用筛过的示范微调一个开放权重模型。拿训练时留出的仓库重新测试，给学生相同的工具和固定的预算，看它能否独立完成。</li>
+        </ol>
+
+        <h2>一条训练样本里到底装什么</h2>
+
+        <p>假设教师先跑 <code>python -m pytest</code>，收到 <code>No module named pytest</code>。它查看项目的环境说明，切换到正确的环境，再跑一次。这回测试才报出真正的业务错误 <code>expected 0, got None</code>。教师接着去看总金额的计算逻辑，修复空购物车分支，再验证正常购物车的结果。</p>
+
+        <p>这里其实有两道训练题。看到测试工具缺失，下一步先检查环境。看到总金额的断言失败，下一步才去定位代码。两道题都发生在补丁写完之前，而且在别的项目里也用得上。<strong>工具的返回是输入，教师接下来做的动作是学习目标。</strong></p>
+
+        <p>把记录转换成学生支持的消息和工具格式，保留工具名与参数。把转换后的序列记为 $z_1,\ldots,z_T$，用 $A$ 表示我们希望学生模仿的教师消息和工具调用所对应的 token 位置。监督微调（SFT）就在这些位置计算下一 token 的损失。</p>
+
+        \[
+          \mathcal L(\theta)=-\sum_{t\in A}\log p_\theta(z_t\mid z_{&lt;t}).
+        \]
+
+        <p>此前的历史包含题目和当时已经拿到的工具返回。训练让学生学会看完这些信息之后怎么行动。上线时，下一条测试结果由测试工具给出。</p>
+
+        <h2>思维链从哪里来</h2>
+
+        <p>GPT 和 Claude 的公开接口把原始推理留在服务端。支持的模型或设置可以返回推理摘要，你也可以请教师写一份给读者看的可核查解法。解法能教技巧，真实的工具轨迹还能说明当时实际执行了什么、收到了什么结果。 [1–3]</p>
+
+        <p>一道能直接判对错的题，简明解法可能就够了。要教编码智能体，尤其值得保留的是看到反馈以后换动作的地方。把触发这个决定的反馈一起留在样本里，学生才有机会学会什么时候该换路。</p>
+
+        <h2>实际有人这么做吗</h2>
+
+        <p><em>SWE-smith</em> 就是一个公开案例。团队用 Claude 3.7 Sonnet 生成并筛出 <strong>5,016 条</strong>执行轨迹，拿它们微调 Qwen2.5-Coder-Instruct-32B。学生在 SWE-bench Verified 上的单次解决率达到 <strong>40.2%</strong>，比起点高 33.4 个百分点。同一套 SWE-agent 框架下，教师是 58.2%。为了得到这批示范，团队在 8,686 个不同训练任务上共尝试了 17,906 次。每一次尝试都花成本，最后能拿来训练的是过筛的示范。 [4]</p>
+
+        <p>想知道轨迹值不值得采，可以做一个对照。用同一个基座、同一批 bug 和同样的正确补丁训练两组学生，一组只学补丁，另一组也学工具轨迹。让训练预算可比，再用同一套工具和推理预算测留出的仓库。看独立通过率、出错后的恢复率，以及每个验收通过的任务花了多少模型费用。要是带轨迹的学生更会从错误里走出来，你就知道买到的是什么能力了。</p>
+
+        <p>实际用商业 API 做教师时，采集和训练用途以对应协议为准。OpenAI 和 Anthropic 的公开商业条款均对训练竞争模型设有限制，具体例外或批准按各自条款处理。 [5–6]</p>
+
+        <hr>
+
+        <h2>参考文献</h2>
+
+        <ol class="references">
+          <li>OpenAI. <a href="https://developers.openai.com/api/docs/guides/reasoning#reasoning-summaries">推理模型与推理摘要</a>。</li>
+          <li>Anthropic. <a href="https://platform.claude.com/docs/en/build-with-claude/thinking#summarized-thinking">Claude 推理摘要</a>。</li>
+          <li>Hsieh, C.-Y., et al. (2023). <a href="https://aclanthology.org/2023.findings-acl.507/"><em>Distilling Step-by-Step! Outperforming Larger Language Models with Less Training Data and Smaller Model Sizes</em></a>. Findings of ACL 2023.</li>
+          <li>Yang, J., et al. (2025). <a href="https://arxiv.org/html/2504.21798v2#S4"><em>SWE-smith: Scaling Data for Software Engineering Agents</em></a>，第 4 节。</li>
+          <li>OpenAI. <a href="https://openai.com/policies/services-agreement/">服务协议</a>，第 3.3 节。</li>
+          <li>Anthropic. <a href="https://www.anthropic.com/legal/commercial-terms">商业服务条款</a>，第 D.4 节。</li>
+        </ol>
+
+        <h2>引用</h2>
+
+        <p>如需引用本文，可使用下方的 BibTeX。</p>
+
+        <pre class="bibtex"><code>@misc{vann2026Distillation1,
+  title = {How Do You Distill Closed-Source Models Like GPT and Claude?},
+  author = {Zhou, Yufan},
+  year = {2026},
+  month = November,
+  howpublished = {\url{https://yufanzhou142.github.io/posts/vann-distillation1.html}},
+  note = {Blog post}
+}</code></pre>
+      </template>
+
+      <p class="blog-footer">
+        <a href="../blog.html">&larr; Back to Blogs</a>
+        <span class="article-date">Nov. 10, 2026</span>
+      </p>
+    </div>
+  </div>
+
+<script>
+  (function() {
+    var root = document.documentElement;
+    var btn = document.getElementById('theme-toggle');
+    var icon = document.getElementById('theme-icon');
+    var label = document.getElementById('theme-label');
+
+    function getStored() { return localStorage.getItem('theme'); }
+    function isDark() { return getStored() === 'dark'; }
+
+    function apply(dark) {
+      if (dark) {
+        root.setAttribute('data-theme', 'dark');
+        icon.textContent = '☀️';
+        label.textContent = 'Light';
+      } else {
+        root.setAttribute('data-theme', 'light');
+        icon.textContent = '🌙';
+        label.textContent = 'Dark';
+      }
+      document.querySelector('meta[name="theme-color"]')
+        .setAttribute('content', dark ? '#111827' : '#ffffff');
+    }
+
+    apply(isDark());
+
+    btn.addEventListener('click', function() {
+      var next = !isDark();
+      localStorage.setItem('theme', next ? 'dark' : 'light');
+      apply(next);
+    });
+  })();
+</script>
+<script>
+  (function() {
+    var body = document.getElementById('article-body');
+    var enHTML = body.innerHTML;
+    var zhHTML = document.getElementById('article-zh').innerHTML;
+    var titleEl = document.querySelector('.article-title');
+    var backEl = document.querySelector('.article-back');
+    var footerEl = document.querySelector('.blog-footer a');
+    var toggle = document.getElementById('lang-toggle');
+    var menu = document.getElementById('lang-menu');
+    var label = document.getElementById('lang-label');
+    var options = menu.querySelectorAll('.lang-option');
+
+    var en = {
+      pageTitle: document.title,
+      title: titleEl.textContent,
+      back: backEl.textContent,
+      footer: footerEl.textContent
+    };
+    var zh = {
+      pageTitle: '如何对GPT、Claude这种闭源模型进行蒸馏？ — Yufan Zhou',
+      title: '如何对GPT、Claude这种闭源模型进行蒸馏？',
+      back: '← 博客',
+      footer: '← 返回博客'
+    };
+    var current = 'en';
+
+    function retypeset() {
+      if (!window.MathJax || !MathJax.startup || !MathJax.startup.promise) return;
+      MathJax.startup.promise.then(function() {
+        if (MathJax.typesetPromise) MathJax.typesetPromise([body]);
+      });
+    }
+
+    function apply(lang) {
+      var isZh = lang === 'zh';
+      if (lang !== current) {
+        body.innerHTML = isZh ? zhHTML : enHTML;
+        current = lang;
+        retypeset();
+      }
+      document.documentElement.lang = isZh ? 'zh-CN' : 'en';
+      document.title = isZh ? zh.pageTitle : en.pageTitle;
+      titleEl.textContent = isZh ? zh.title : en.title;
+      backEl.textContent = isZh ? zh.back : en.back;
+      footerEl.textContent = isZh ? zh.footer : en.footer;
+      label.textContent = isZh ? '中' : 'EN';
+      for (var i = 0; i < options.length; i++) {
+        options[i].setAttribute('aria-current', options[i].getAttribute('data-lang') === lang ? 'true' : 'false');
+      }
+    }
+
+    function closeMenu() {
+      menu.hidden = true;
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+
+    toggle.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var opening = menu.hidden;
+      menu.hidden = !opening;
+      toggle.setAttribute('aria-expanded', opening ? 'true' : 'false');
+    });
+
+    for (var j = 0; j < options.length; j++) {
+      options[j].addEventListener('click', function() {
+        apply(this.getAttribute('data-lang'));
+        closeMenu();
+      });
+    }
+
+    document.addEventListener('click', function(e) {
+      if (!menu.hidden && !(e.target.closest && e.target.closest('.lang-switch'))) closeMenu();
+    });
+
+    // Always open in English; the switch only affects the current visit.
+    try { localStorage.removeItem('article-lang'); } catch (e) {}
+    apply('en');
+  })();
+</script>
+</body>
+</html>
