@@ -64,58 +64,117 @@
         <p class="article-meta">Vann</p>
 
         <div class="article-body" id="article-body">
-          <p>Suppose I want a small model to fix a particular kind of bug. I give a stronger model a batch of those bugs, record how it handles them, and keep the fixes that survive testing. Then I use those demonstrations to fine-tune the smaller model. GPT or Claude plays the teacher. All the training happens on the student.</p>
+          <p>An empty shopping cart returns <code>null</code>. The API specifies <code>0</code>. Give the same bug report and repository revision to GPT or Claude. A successful run yields a patch. If we keep the tool log, it also yields the observations that led to that patch. These are two different training sets even when the patches agree.</p>
 
-          <p>That is <strong>black-box distillation</strong>. The teacher's weights stay on the provider's servers. The API gives me a demonstration in the form of an answer, a worked solution, or a sequence of tool calls that I can execute and check.</p>
+          <p>In both cases the teacher is a black box. We can sample its responses, and we can record the tools we execute on its behalf. We train a separate model with accessible weights. The useful question is what each of these records lets that model learn.</p>
 
-          <h2>Start with a bug you can reproduce</h2>
+          <h2>1. The objective when all we have are samples</h2>
 
-          <p>Imagine that an empty shopping cart returns <code>null</code> as its total when the API contract says it should return <code>0</code>. A patch that replaces one with the other tells us what fixed this bug. A tool trace can also show how the model found the right place to make the change.</p>
-
-          <ol>
-            <li><strong>Set up the task.</strong> Save the bug report, the exact repository revision, and a reproducible test environment. Keep separate acceptance tests for the empty cart and for a normal cart with items.</li>
-            <li><strong>Let the teacher work.</strong> Give GPT or Claude tools to read files, edit code, and run commands in an isolated copy of the repository. Execute each tool call, send the real result back, and log the exchange. For hard tasks, try several solutions from the same initial state.</li>
-            <li><strong>Keep verified demonstrations.</strong> Run the acceptance and regression tests against the resulting patch. If you also keep a written explanation, check its key claims against the code and the execution log.</li>
-            <li><strong>Fine-tune and retest.</strong> Use the verified demonstrations to fine-tune an open-weight student. Then let it attempt bugs in repositories held out from training, with the same tools and a fixed budget.</li>
-          </ol>
-
-          <h2>What goes into one training example?</h2>
-
-          <p>Suppose the teacher runs <code>python -m pytest</code> and gets <code>No module named pytest</code>. It checks the project's setup instructions, switches to the project environment, and runs the test again. This time the test reports <code>expected 0, got None</code>. The teacher inspects the code that calculates the total, fixes the empty-cart case, and verifies that a cart with items still produces the right total.</p>
-
-          <p>The student gets two different lessons. Given a missing test runner, check the environment. Given a failed assertion about the cart total, investigate the code. Both appear before the final patch, and both are useful on future bugs. <strong>The tool result is context. The teacher's next action is the target.</strong></p>
-
-          <p>Format the transcript using the student's message and tool schema so it can learn the exact tool names and arguments. For supervised fine-tuning (SFT), write that transcript as $z_1,\ldots,z_T$ and let $A$ denote the token positions in the teacher's messages and tool calls that we want the student to imitate. We train with the usual next-token loss on those positions.</p>
+          <p>Fix a task $x$. Let $q(y)$ be the teacher's distribution over complete responses and $p_\theta(y)$ the student's distribution for the same task. Suppose $p_\theta(y)&gt;0$ wherever $q(y)&gt;0$. Classical distillation can use the teacher's soft probabilities [1]. A closed API typically gives us sampled responses $Y_1,\ldots,Y_n$. With independent samples, supervised fine-tuning uses</p>
 
           \[
-            \mathcal L(\theta)=-\sum_{t\in A}\log p_\theta(z_t\mid z_{&lt;t}).
+          \widehat L_n(\theta)
+          =-\frac{1}{n}\sum_{i=1}^n\log p_\theta(Y_i).
           \]
 
-          <p>The earlier history includes the bug report and any tool results available at that point. The loss teaches the student to choose an action given that history. When the student is deployed, the test runner supplies the next observation.</p>
+          <p>Taking expectations term by term gives $\mathbb E[\widehat L_n]=L$. To identify $L$, add and subtract $\sum_y q(y)\log q(y)$ in the sum.</p>
 
-          <h2>Where does the reasoning come from?</h2>
+          \[
+          \begin{aligned}
+          L(\theta)
+          &amp;=-\sum_y q(y)\log p_\theta(y)\\
+          &amp;=H(q)+\sum_y q(y)\log\frac{q(y)}{p_\theta(y)}\\
+          &amp;=H(q)+D_{\mathrm{KL}}(q\Vert p_\theta).
+          \end{aligned}
+          \]
 
-          <p>The public GPT and Claude APIs keep raw reasoning on the provider's side. Supported models or settings can return a reasoning summary. You can also ask the teacher to write a worked solution for the reader. That explanation can help teach a technique, and a real tool trace adds evidence about which commands ran and what they returned. [1–3]</p>
+          <p>$H(q)$ is constant in $\theta$. If the student family contains $q$, matching $q$ minimizes the population loss. In training, the student evaluates $p_\theta(Y_i)$ by multiplying the probabilities of its tokens in sequence. The teacher only supplies $Y_i$.</p>
 
-          <p>For a task with a single checkable answer, a short worked solution may be plenty. For a coding agent, the useful extra data often comes from decisions that change after an observation. Record the observation alongside the decision so the student can learn when to take a different action.</p>
+          <h2>2. Passing a test changes the target distribution</h2>
 
-          <h2>What does this look like at scale?</h2>
+          <p>For the cart bug, reserve one acceptance test for the empty cart and another for a cart with items. Give the teacher the bug report, the repository, and the tools to work on a fresh copy. Run the reserved tests on the resulting patch. The tests define a binary verifier $V(y)$. Let $s=\Pr_{Y\sim q}(V(Y)=1)$ for this task.</p>
 
-          <p><em>SWE-smith</em> is a concrete example. The authors collected <strong>5,016</strong> verified and filtered trajectories from Claude 3.7 Sonnet and used them to fine-tune Qwen2.5-Coder-Instruct-32B. The student resolved <strong>40.2%</strong> of SWE-bench Verified tasks on one attempt, a gain of 33.4 percentage points over its starting model. The teacher scored 58.2% in the same SWE-agent framework. To build that dataset, the team ran 17,906 attempts across 8,686 distinct training tasks. The final dataset size tells only part of the collection cost. [4]</p>
+          <p>Draw at most $n$ independent candidates from the same initial state and keep the first that passes. The probability of keeping the task is</p>
 
-          <p>To find out whether the trajectory is worth collecting, train two students from the same checkpoint. Give both the same bugs and verified fixes. Give one student the patches alone and the other the corresponding tool traces. Keep the training budgets comparable and test both on held-out repositories with the same tools and inference budget. Compare pass rates, recovery after an error, and model spend per verified fix. That tells you whether the extra trace data improved the capability you actually care about.</p>
+          \[
+          \Pr(\mathrm{keep})=1-(1-s)^n.
+          \]
 
-          <p>For a project using a commercial API as the teacher, check the agreement covering that use. OpenAI and Anthropic's published business terms both restrict use for training competing models, with exceptions or approvals defined in the respective terms. [5–6]</p>
+          <p>To keep a particular answer $y$ at attempt $j$, the first $j-1$ candidates must fail, and candidate $j$ must be $y$ and pass. Summing over $j$ gives the joint probability of keeping the task and keeping $y$.</p>
+
+          \[
+          q(y)V(y)\sum_{j=0}^{n-1}(1-s)^j.
+          \]
+
+          <p>Divide by $\Pr(\mathrm{keep})$. For $s&gt;0$, the geometric sum cancels, leaving</p>
+
+          \[
+          q_V(y)=\Pr(Y_{\mathrm{kept}}=y\mid\mathrm{keep})
+          =\frac{q(y)V(y)}{s}.
+          \]
+
+          <p>More attempts increase task coverage. At a fixed task, the first passing answer still follows $q_V$. If tasks originally have distribution $\mu(x)$, Bayes' rule weights each task by its probability of leaving a sample. Write $s_x$ for the teacher's pass rate on task $x$.</p>
+
+          \[
+          \mu_V(x)\propto\mu(x)\big[1-(1-s_x)^n\big].
+          \]
+
+          <p>A common attempt budget therefore overrepresents tasks with high teacher pass rates. Count how many examples survive in each task category before deciding where more sampling will help.</p>
+
+          <h2>3. A trajectory adds supervision at each decision</h2>
+
+          <p>Let a run have $m$ turns. At turn $t$, the model sees history $h_t$, chooses action $a_t$, and receives observation $o_t$. Suppose the teacher and student use the same action space and environment. Denote their action policies by $\pi_T$ and $\pi_\theta$, and the environment's response distribution by $K(o_t\mid h_t,a_t)$. For $j\in\{T,\theta\}$, the unfiltered trajectory distribution factorizes as follows. The task $x$ is fixed and implicit.</p>
+
+          \[
+          P_j(\tau)=\prod_{t=1}^{m}
+          \big[\pi_j(a_t\mid h_t)K(o_t\mid h_t,a_t)\big].
+          \]
+
+          <p>In the log ratio of the two trajectory probabilities, the $K$ factors cancel. The remaining terms are action log ratios. Taking the teacher expectation and conditioning each term on $h_t$ gives</p>
+
+          \[
+          \begin{aligned}
+          d_t(h)&amp;=D_{\mathrm{KL}}\big(
+             \pi_T(\cdot\mid h)\Vert\pi_\theta(\cdot\mid h)\big),\\
+          D_{\mathrm{KL}}(P_T\Vert P_\theta)
+          &amp;=\sum_{t=1}^m\mathbb E_{h_t\sim P_T}[d_t(h_t)].
+          \end{aligned}
+          \]
+
+          <p>This is why the training loss goes on the teacher's actions. Tool observations belong in the history that conditions those actions. After selecting successful runs, the action targets come from the retained histories. The joint KL identity above concerns unfiltered runs, since conditioning on success can also change the distribution of observations.</p>
+
+          <h2>4. How much can one observation tell the student?</h2>
+
+          <p>Stop the cart log just after <code>python -m pytest</code> is called. Let $B$ be the visible history at that point, and consider two equally likely tool results $O$. The first says <code>No module named pytest</code>, in which case the next action is to check the Python environment. The second says <code>expected 0, got None</code>, in which case the next action is to inspect the total calculation. The command and the history before its result are identical in this example.</p>
+
+          <p>For a predictor of the next action $A$, the smallest expected log loss given input $U$ is $H(A\mid U)$. This follows from the first derivation applied at each value of $U$. The optimal predictor uses the true conditional action distribution. The reduction from showing the observation is therefore</p>
+
+          \[
+          H(A\mid B)-H(A\mid B,O)
+          = I(A;O\mid B).
+          \]
+
+          <p>Here the best predictor with only $B$ assigns probability $1/2$ to each action. Its loss is $\log 2$. With $O$, the action is determined, so the ideal loss is zero. The tool return supplies exactly one bit about the next action in this example. A final patch can be identical in both runs while leaving that decision out of the training record.</p>
+
+          <p>Public GPT and Claude APIs expose responses and, for supported settings, reasoning summaries. The underlying reasoning tokens remain on the provider side [3, 4]. A worked explanation can be a useful target. For the example above, the evidence that determines the action is the result returned by the test runner.</p>
+
+          <h2>5. A controlled comparison</h2>
+
+          <p>Use the same accepted tasks and patches to train two students from the same base model. One sees only the patches. The other sees the recorded actions and observations as well. Evaluate on held-out repositories, with identical tools and inference budgets. Report task-matched results, then repeat with comparable training token budgets. Measure both pass rate and recovery after a failed command. These distinguish learning to predict the demonstrated actions from learning to complete new tasks.</p>
+
+          <p>One published result illustrates the scale of collection. SWE-smith attempted 17,906 runs over 8,686 distinct tasks and retained 5,016 expert trajectories. Fine-tuning Qwen2.5-Coder-Instruct-32B on those trajectories gave 40.2% single-attempt resolution on SWE-bench Verified, compared with 58.2% for the Claude 3.7 Sonnet teacher in the same SWE-agent framework [2]. This compares the trained student with its teacher. The patch-versus-trajectory comparison above tests the additional value of keeping the process.</p>
+
+          <p>For commercial teachers, the agreement determines which training uses are permitted. OpenAI and Anthropic publish restrictions on training competing models, with exceptions or approvals specified in their terms [5, 6].</p>
 
           <hr>
 
           <h2>References</h2>
 
           <ol class="references">
-            <li>OpenAI. <a href="https://developers.openai.com/api/docs/guides/reasoning#reasoning-summaries">Reasoning models and reasoning summaries</a>.</li>
-            <li>Anthropic. <a href="https://platform.claude.com/docs/en/build-with-claude/thinking#summarized-thinking">Summarized thinking</a>.</li>
-            <li>Hsieh, C.-Y., et al. (2023). <a href="https://aclanthology.org/2023.findings-acl.507/"><em>Distilling Step-by-Step! Outperforming Larger Language Models with Less Training Data and Smaller Model Sizes</em></a>. Findings of ACL 2023.</li>
+            <li>Hinton, G., Vinyals, O., &amp; Dean, J. (2015). <a href="https://arxiv.org/abs/1503.02531"><em>Distilling the Knowledge in a Neural Network</em></a>.</li>
             <li>Yang, J., et al. (2025). <a href="https://arxiv.org/html/2504.21798v2#S4"><em>SWE-smith: Scaling Data for Software Engineering Agents</em></a>, Section 4.</li>
+            <li>OpenAI. <a href="https://developers.openai.com/api/docs/guides/reasoning#reasoning-summaries">Reasoning summaries</a>.</li>
+            <li>Anthropic. <a href="https://platform.claude.com/docs/en/build-with-claude/thinking#summarized-thinking">Summarized thinking</a>.</li>
             <li>OpenAI. <a href="https://openai.com/policies/services-agreement/">Services Agreement</a>, Section 3.3.</li>
             <li>Anthropic. <a href="https://www.anthropic.com/legal/commercial-terms">Commercial Terms of Service</a>, Section D.4.</li>
           </ol>
@@ -136,58 +195,116 @@
       </article>
 
       <template id="article-zh">
-        <p>假设我想让一个小模型学会修某一类 bug。我可以先把这批 bug 交给 GPT 或 Claude，记录它是怎么做的，用测试挑出成功的示范，再拿这些示范微调小模型。<strong>闭源模型负责做题，训练发生在学生模型上。</strong></p>
+        <p>空购物车的总额返回了 <code>null</code>，接口约定的是 <code>0</code>。把故障描述和仓库版本交给 GPT 或 Claude，一次成功的修复会留下一份补丁。如果也记录工具调用，我们还会知道它是看到哪条报错才去改那段代码。两次修复可以得到完全相同的补丁，却留下不同的训练材料。</p>
 
-        <p>这就是<strong>黑盒蒸馏</strong>。教师的权重留在服务商那边。我们从接口拿到的是它对具体任务的示范，可以是一份答案、一段解法，也可以是一串能在自己环境里执行并核验的工具调用。</p>
+        <p>这两种做法都把教师当成黑盒。教师负责作答，我们记录返回的内容，以及由我们执行的工具给出的结果。训练发生在另一个权重可用的模型上。问题是，这些记录分别给了学生什么监督？</p>
 
-        <h2>从一个能复现的 bug 开始</h2>
+        <h2>1. 只看教师给出的答案</h2>
 
-        <p>比如，购物车为空时，接口把总金额返回成 <code>null</code>，按约定应该返回 <code>0</code>。最后的补丁能告诉学生哪里改对了。一条工具轨迹还能教它怎么找到那个位置。</p>
-
-        <ol>
-          <li><strong>把题目准备好。</strong> 固定 bug 描述、仓库版本和测试环境，另留验收测试。一条检查空购物车返回 <code>0</code>，另一条确认有商品的购物车仍能正确计价。</li>
-          <li><strong>让教师做一遍。</strong> 在隔离的仓库副本里给 GPT 或 Claude 提供读文件、改代码和运行命令的工具。每次都实际执行，把真实结果发回给教师，并保存这轮交互。难题可以从同一初始状态多试几次。</li>
-          <li><strong>筛出可用的示范。</strong> 用验收测试和回归测试检查最终补丁。如果还要保留文字解法，就对照代码和执行日志检查其中的关键判断。</li>
-          <li><strong>微调学生，再出新题。</strong> 用筛过的示范微调一个开放权重模型。拿训练时留出的仓库重新测试，给学生相同的工具和固定的预算，看它能否独立完成。</li>
-        </ol>
-
-        <h2>一条训练样本里到底装什么</h2>
-
-        <p>假设教师先跑 <code>python -m pytest</code>，收到 <code>No module named pytest</code>。它查看项目的环境说明，切换到正确的环境，再跑一次。这回测试才报出真正的业务错误 <code>expected 0, got None</code>。教师接着去看总金额的计算逻辑，修复空购物车分支，再验证正常购物车的结果。</p>
-
-        <p>这里其实有两道训练题。看到测试工具缺失，下一步先检查环境。看到总金额的断言失败，下一步才去定位代码。两道题都发生在补丁写完之前，而且在别的项目里也用得上。<strong>工具的返回是输入，教师接下来做的动作是学习目标。</strong></p>
-
-        <p>把记录转换成学生支持的消息和工具格式，保留工具名与参数。把转换后的序列记为 $z_1,\ldots,z_T$，用 $A$ 表示我们希望学生模仿的教师消息和工具调用所对应的 token 位置。监督微调（SFT）就在这些位置计算下一 token 的损失。</p>
+        <p>固定一道题 $x$。记教师在完整答案上的分布为 $q(y)$，学生的分布为 $p_\theta(y)$。假设在 $q(y)&gt;0$ 的地方都有 $p_\theta(y)&gt;0$。经典蒸馏可以使用教师的软概率 [1]。闭源接口通常给出的是采样结果 $Y_1,\ldots,Y_n$。把这些结果当成独立样本，监督微调的目标可以写成</p>
 
         \[
-          \mathcal L(\theta)=-\sum_{t\in A}\log p_\theta(z_t\mid z_{&lt;t}).
+        \widehat L_n(\theta)
+        =-\frac{1}{n}\sum_{i=1}^n\log p_\theta(Y_i).
         \]
 
-        <p>此前的历史包含题目和当时已经拿到的工具返回。训练让学生学会看完这些信息之后怎么行动。上线时，下一条测试结果由测试工具给出。</p>
+        <p>逐项取期望，得到 $\mathbb E[\widehat L_n]=L$。在和式中加减 $\sum_y q(y)\log q(y)$，就能看清这个总体目标。</p>
 
-        <h2>思维链从哪里来</h2>
+        \[
+        \begin{aligned}
+        L(\theta)
+        &amp;=-\sum_y q(y)\log p_\theta(y)\\
+        &amp;=H(q)+\sum_y q(y)\log\frac{q(y)}{p_\theta(y)}\\
+        &amp;=H(q)+D_{\mathrm{KL}}(q\Vert p_\theta).
+        \end{aligned}
+        \]
 
-        <p>GPT 和 Claude 的公开接口把原始推理留在服务端。支持的模型或设置可以返回推理摘要，你也可以请教师写一份给读者看的可核查解法。解法能教技巧，真实的工具轨迹还能说明当时实际执行了什么、收到了什么结果。 [1–3]</p>
+        <p>$H(q)$ 与学生参数无关。若学生模型族能表示 $q$，总体损失在两者分布一致时取最小值。实际训练时，学生按顺序计算答案里每个 token 的概率，再相乘得到 $p_\theta(Y_i)$。教师只需给出一条采到的答案 $Y_i$。</p>
 
-        <p>一道能直接判对错的题，简明解法可能就够了。要教编码智能体，尤其值得保留的是看到反馈以后换动作的地方。把触发这个决定的反馈一起留在样本里，学生才有机会学会什么时候该换路。</p>
+        <h2>2. 通过测试的答案服从什么分布</h2>
 
-        <h2>实际有人这么做吗</h2>
+        <p>回到购物车。事先留出两个验收用例，分别检查空购物车和有商品的购物车。把故障报告、仓库和工具交给教师，每次从干净副本开始，最后用留出的用例验收。记验证器为 $V(y)\in\{0,1\}$，教师单次通过的概率为 $s=\Pr_{Y\sim q}(V(Y)=1)$。</p>
 
-        <p><em>SWE-smith</em> 就是一个公开案例。团队用 Claude 3.7 Sonnet 生成并筛出 <strong>5,016 条</strong>执行轨迹，拿它们微调 Qwen2.5-Coder-Instruct-32B。学生在 SWE-bench Verified 上的单次解决率达到 <strong>40.2%</strong>，比起点高 33.4 个百分点。同一套 SWE-agent 框架下，教师是 58.2%。为了得到这批示范，团队在 8,686 个不同训练任务上共尝试了 17,906 次。每一次尝试都花成本，最后能拿来训练的是过筛的示范。 [4]</p>
+        <p>最多独立采样 $n$ 次，只留下第一条通过的结果。题目被留下的概率是</p>
 
-        <p>想知道轨迹值不值得采，可以做一个对照。用同一个基座、同一批 bug 和同样的正确补丁训练两组学生，一组只学补丁，另一组也学工具轨迹。让训练预算可比，再用同一套工具和推理预算测留出的仓库。看独立通过率、出错后的恢复率，以及每个验收通过的任务花了多少模型费用。要是带轨迹的学生更会从错误里走出来，你就知道买到的是什么能力了。</p>
+        \[
+        \Pr(\mathrm{keep})=1-(1-s)^n.
+        \]
 
-        <p>实际用商业 API 做教师时，采集和训练用途以对应协议为准。OpenAI 和 Anthropic 的公开商业条款均对训练竞争模型设有限制，具体例外或批准按各自条款处理。 [5–6]</p>
+        <p>如果第 $j$ 次留下的是答案 $y$，前 $j-1$ 次都得失败，第 $j$ 次得恰好抽到 $y$ 且通过。把这些互斥事件加起来，得到同时保留这道题和答案 $y$ 的概率。</p>
+
+        \[
+        q(y)V(y)\sum_{j=0}^{n-1}(1-s)^j.
+        \]
+
+        <p>用它除以题目入选概率。对 $s&gt;0$，约掉等比和，剩下</p>
+
+        \[
+        q_V(y)=\Pr(Y_{\mathrm{kept}}=y\mid\mathrm{keep})
+        =\frac{q(y)V(y)}{s}.
+        \]
+
+        <p>多试几次能让更多题进入训练集。同一道题一旦入选，第一条通过的答案始终服从 $q_V$。若题目的初始分布为 $\mu(x)$，记教师对题目 $x$ 的通过率为 $s_x$。由贝叶斯公式，每道题在筛选后的权重正比于它原来的权重乘上入选概率。</p>
+
+        \[
+        \mu_V(x)\propto\mu(x)\big[1-(1-s_x)^n\big].
+        \]
+
+        <p>统一的重试预算会优先留下教师本来就容易做对的题。要判断接下来该补哪批数据，先数一下各类题实际留下了多少。</p>
+
+        <h2>3. 从答案到轨迹</h2>
+
+        <p>把一次执行分成 $m$ 轮。第 $t$ 轮，模型看到历史 $h_t$，选择动作 $a_t$，工具返回 $o_t$。令 $\pi_T$ 和 $\pi_\theta$ 分别表示教师和学生的动作分布。两者用同一套工具，给定历史和动作时，环境返回的分布都是 $K(o_t\mid h_t,a_t)$。固定题目后，未筛选的轨迹在 $j\in\{T,\theta\}$ 下有以下分解。</p>
+
+        \[
+        P_j(\tau)=\prod_{t=1}^{m}
+        \big[\pi_j(a_t\mid h_t)K(o_t\mid h_t,a_t)\big].
+        \]
+
+        <p>把教师和学生的轨迹概率相除，所有 $K$ 因子约掉。对剩下的动作概率取对数，再按教师轨迹取期望。每一项先给定 $h_t$ 取条件期望，就得到该历史上的动作 KL。</p>
+
+        \[
+        \begin{aligned}
+        d_t(h)&amp;=D_{\mathrm{KL}}\big(
+           \pi_T(\cdot\mid h)\Vert\pi_\theta(\cdot\mid h)\big),\\
+        D_{\mathrm{KL}}(P_T\Vert P_\theta)
+        &amp;=\sum_{t=1}^m\mathbb E_{h_t\sim P_T}[d_t(h_t)].
+        \end{aligned}
+        \]
+
+        <p>所以，日志里工具的返回应放在输入里，训练损失算在教师写出的动作上。上线时，下一条返回仍由工具给出。上式针对未筛选的轨迹。筛过以后，我们拟合的是保留样本里的动作。按最终成功筛选，也可能改变样本中工具返回的分布。</p>
+
+        <h2>4. 一条报错能提供多少信息</h2>
+
+        <p>把日志截在 <code>python -m pytest</code> 刚发出时，记当时可见的历史为 $B$。设接下来有两种等概率的返回 $O$。若报 <code>No module named pytest</code>，先检查 Python 环境。若报 <code>expected 0, got None</code>，去看总金额的计算。发出的命令一样，此前看到的历史也一样。</p>
+
+        <p>把第一节的交叉熵推导应用到每个给定的输入 $U$。预测下一动作 $A$ 时，最好的预测器给出真实条件分布，最小的期望对数损失是 $H(A\mid U)$。给学生看到这条返回后，最优损失减少</p>
+
+        \[
+        H(A\mid B)-H(A\mid B,O)=I(A;O\mid B).
+        \]
+
+        <p>在这个例子里，只看 $B$ 时，最优预测对两个动作各给 $1/2$，损失是 $\log 2$。看到 $O$ 后，动作可以确定，损失降到零。这条报错恰好提供一比特关于下一动作的信息。两次执行最终可能得到同一份补丁，但补丁里没有这个分岔。</p>
+
+        <p>GPT 和 Claude 的公开接口会返回回答，支持时也可以返回推理摘要，原始推理留在服务端 [3, 4]。可以请教师另写一份可核查的解法。对上面的例子，决定下一步动作的证据是测试工具实际返回的那一行。</p>
+
+        <h2>5. 怎么检验轨迹确实有用</h2>
+
+        <p>从同一个基座训练两组学生，给它们同一批验收通过的题和补丁。一组只学补丁，另一组也学工具轨迹。用同样的工具和推理预算，在训练时留出的仓库上测试。先对齐训练题目，再在相近的训练 token 预算下重做比较。除了通过率，还记录命令第一次失败以后有多少任务能恢复。动作预测得更准和新任务做得更好，可以分别测量。</p>
+
+        <p>SWE-smith 给出了一个实际的采样规模。团队在 8,686 道不同的题上做了 17,906 次尝试，最后保留 5,016 条教师轨迹。用这些数据微调 Qwen2.5-Coder-Instruct-32B，在 SWE-bench Verified 上得到 40.2% 的单次解决率。同一套 SWE-agent 框架下，Claude 3.7 Sonnet 教师是 58.2% [2]。这组数字比较了教师和训练后的学生。要知道多保留过程值多少，还得做前面的补丁与轨迹对照。</p>
+
+        <p>使用商业教师时，训练用途按对应协议处理。OpenAI 和 Anthropic 的公开条款都对训练竞争模型设有限制，例外和批准以各自条款为准 [5, 6]。</p>
 
         <hr>
 
         <h2>参考文献</h2>
 
         <ol class="references">
-          <li>OpenAI. <a href="https://developers.openai.com/api/docs/guides/reasoning#reasoning-summaries">推理模型与推理摘要</a>。</li>
-          <li>Anthropic. <a href="https://platform.claude.com/docs/en/build-with-claude/thinking#summarized-thinking">Claude 推理摘要</a>。</li>
-          <li>Hsieh, C.-Y., et al. (2023). <a href="https://aclanthology.org/2023.findings-acl.507/"><em>Distilling Step-by-Step! Outperforming Larger Language Models with Less Training Data and Smaller Model Sizes</em></a>. Findings of ACL 2023.</li>
+          <li>Hinton, G., Vinyals, O., &amp; Dean, J. (2015). <a href="https://arxiv.org/abs/1503.02531"><em>Distilling the Knowledge in a Neural Network</em></a>。</li>
           <li>Yang, J., et al. (2025). <a href="https://arxiv.org/html/2504.21798v2#S4"><em>SWE-smith: Scaling Data for Software Engineering Agents</em></a>，第 4 节。</li>
+          <li>OpenAI. <a href="https://developers.openai.com/api/docs/guides/reasoning#reasoning-summaries">推理摘要</a>。</li>
+          <li>Anthropic. <a href="https://platform.claude.com/docs/en/build-with-claude/thinking#summarized-thinking">Claude 推理摘要</a>。</li>
           <li>OpenAI. <a href="https://openai.com/policies/services-agreement/">服务协议</a>，第 3.3 节。</li>
           <li>Anthropic. <a href="https://www.anthropic.com/legal/commercial-terms">商业服务条款</a>，第 D.4 节。</li>
         </ol>
