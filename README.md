@@ -18,6 +18,7 @@ The homepage includes:
 - News with filtering by content or displayed date
 - Publications grouped into First-Author, Co-Author, and Patent; the patent entry lists all inventors, its Chinese title, the English patent type, Patent No. ZL 2026 1 0206118.2, and the certificate PDF
 - Paper entries with a venue badge, figure, authors, summary, and paper/code/video links
+- Both paper buttons open local PDFs under `assets/files/`; the GS³-ICL title keeps its DOI link, and the O-LyRA figure slot stays a blank placeholder until a figure is supplied
 - The GS³-ICL Video link opens the presentation recording on YouTube (no start-time parameter)
 - Educations and Research Intern
 - Competitions & Others with supporting certificate PDFs
@@ -90,7 +91,9 @@ Blog posts are not listed on the homepage; they live on the standalone `blog.htm
 │       ├── chinese-invention-patent-2026-certificate.pdf
 │       ├── datang-cup-2025-proof.pdf
 │       ├── embedded-competition-2025-proof.pdf
-│       └── math-modeling-2025-proof.pdf
+│       ├── GS3-ICL.pdf
+│       ├── math-modeling-2025-proof.pdf
+│       └── o-lyra.pdf
 └── paper-fig/
     └── icmr-ser/
         └── method.png          # Paper method figure
@@ -124,7 +127,7 @@ The fonts and jQuery use external services and require network access.
 | Post pages | `posts/` |
 | Current downloadable CV | `cv/Yufan Zhou-Xiamen University.pdf` |
 | Profile photo | `assets/vann1.jpg` |
-| Certificate PDFs | `assets/files/` |
+| Certificate and paper PDFs | `assets/files/` |
 | Paper figures | `paper-fig/<paper-name>/` |
 | Text resume | `resume.md` |
 
