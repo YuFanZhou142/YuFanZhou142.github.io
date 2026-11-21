@@ -331,6 +331,18 @@ a:focus-visible {
   object-fit: cover;
 }
 
+.paper-box .paper-box-image .paper-image-placeholder {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  box-shadow: var(--shadow-paper);
+}
+
+.paper-box .paper-box-image .paper-image-placeholder rect {
+  fill: var(--bg-page);
+  stroke: var(--border-color);
+}
+
 .paper-box .paper-box-text {
   flex: 1;
   padding-left: 2em;
