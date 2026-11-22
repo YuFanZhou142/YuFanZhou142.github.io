@@ -302,6 +302,7 @@ a:focus-visible {
   display: flex;
   align-items: center;
   padding: 2em 0 2em 0;
+  scroll-margin-top: 28px;
 }
 
 .paper-box .paper-box-image {
