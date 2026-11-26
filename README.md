@@ -18,7 +18,8 @@ The homepage includes:
 - News with filtering by content or displayed date
 - Publications grouped into First-Author, Co-Author, and Patent; the patent entry lists all inventors, its Chinese title, the English patent type, Patent No. ZL 2026 1 0206118.2, and the certificate PDF
 - Paper entries with a venue badge, figure, authors, summary, and paper/code/video links
-- Both paper buttons open local PDFs under `assets/files/`; the GS³-ICL title keeps its DOI link
+- Both Paper buttons open local PDFs under `assets/files/`; the GS³-ICL title keeps its DOI link
+- The Code buttons open the project repositories: GS³-ICL at `github.com/YuFanZhou142/GS3-ICL`, O-LyRA at `github.com/chenyuan-star/CSTK`
 - The GS³-ICL Video link opens the presentation recording on YouTube (no start-time parameter)
 - Educations and Research Intern
 - Competitions & Others with supporting certificate PDFs
@@ -89,6 +90,7 @@ Blog posts are not listed on the homepage; they live on the standalone `blog.htm
 │   └── files/
 │       ├── Certificate of Computer Software Copyright Registration.pdf
 │       ├── chinese-invention-patent-2026-certificate.pdf
+│       ├── computing-competition-2026-certificate.pdf
 │       ├── datang-cup-2025-proof.pdf
 │       ├── embedded-competition-2025-proof.pdf
 │       ├── GS3-ICL.pdf
